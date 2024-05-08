@@ -1,0 +1,30 @@
+[Warning: Name is nonexistent or not a directory: c:\ubc_PC_setup\site_specific] 
+[> In path (line 109)
+In startup (line 67)] 
+[Warning: Name is nonexistent or not a directory: c:\ubc_PC_setup\PC_specific] 
+[> In path (line 109)
+In startup (line 68)] 
+[Warning: Name is nonexistent or not a directory: C:\Ubc_flux\Matlab] 
+[> In path (line 109)
+In startup (line 102)] 
+===============================
+***** run_UQAM_db_update ******
+===============================
+
+**** Processing Year: 2024, Site: UQAM_0   *************
+  UQAM_0_Met_30m:  Number of files processed = 1, Number of 30-minute periods = 42
+  UQAM_0_Met_05m:  Number of files processed = 1, Number of 5-minute periods = 252
+Error in processing of: C:\Projects\UQAM\Sites\UQAM_0\Met\UQAM_0_RawData_05m.20240507T000042
+Error in processing of: C:\Projects\UQAM\Sites\UQAM_0\Met\UQAM_0_RawData_05m.2024126
+Error in processing of: C:\Projects\UQAM\Sites\UQAM_0\Met\UQAM_0_RawData_05m.2024126a
+Error in processing of: C:\Projects\UQAM\Sites\UQAM_0\Met\UQAM_0_RawData_05m.dat
+  UQAM_0_RawData_05m:  Number of files processed = 0, Number of 5-minute periods = 0
+  UQAM_0: SmartFlux:  Number of files processed = 0, Number of HHours = 0
+  UQAM_0: EddyPro:  Number of files processed = 0, Number of HHours = 0
+UQAM_0  EddyPro_biomet:  Number of files processed = 0, Number of HHours = 0
+
+
+**** run_UQAM_db_update finished in   23.7 sec.******
+=====================================================
+
+

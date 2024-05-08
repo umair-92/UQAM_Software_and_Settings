@@ -1,0 +1,198 @@
+. 2024-05-07 21:00:00.813 --------------------------------------------------------------------------
+. 2024-05-07 21:00:00.813 WinSCP Version 6.3.3 (Build 14916 2024-04-16) (OS 10.0.22631 – Windows 10 Enterprise)
+. 2024-05-07 21:00:00.813 Configuration: HKCU\Software\Martin Prikryl\WinSCP 2\
+. 2024-05-07 21:00:00.813 Log level: Normal
+. 2024-05-07 21:00:00.813 Local account: CAMPUS\znesic
+. 2024-05-07 21:00:00.813 Working directory: C:\Program Files (x86)\WinSCP
+. 2024-05-07 21:00:00.813 Process ID: 26364
+. 2024-05-07 21:00:00.835 Ancestor processes: cmd, LoggerNetService, ToolBar, explorer, ...
+. 2024-05-07 21:00:00.835 Command-line: winscp.exe   /script=C:\Projects\UQAM\Scripts\FTP\UQAM_0_SmartFlux_Download.txt  /log="C:\Projects\UQAM\Scripts\FTP\log\UQAM_0_SmartFlux_download.log"
+. 2024-05-07 21:00:00.835 Time zone: Current: GMT-5 (Eastern Standard Time), No DST
+. 2024-05-07 21:00:00.844 Warning: System option "Automatically adjust clock for Daylight Saving Time" is disabled, timestamps will not be represented correctly
+. 2024-05-07 21:00:00.844 Login time: May 7, 2024 9:00:00 PM
+. 2024-05-07 21:00:00.844 --------------------------------------------------------------------------
+. 2024-05-07 21:00:00.844 Script: Retrospectively logging previous script records:
+> 2024-05-07 21:00:00.844 Script: option batch on
+< 2024-05-07 21:00:00.844 Script: batch           on        
+> 2024-05-07 21:00:00.844 Script: option confirm off
+< 2024-05-07 21:00:00.844 Script: confirm         off       
+> 2024-05-07 21:00:00.844 Script: open UQAM_0
+< 2024-05-07 21:00:00.844 Script: In scripting you should not rely on saved sites, use this command instead:
+< 2024-05-07 21:00:00.844 Script: open sftp://licor:***@173.182.84.12:7222/ -hostkey="ssh-rsa 2048 LJ3p6Q1LLZGyZwPwxxsp4HtgQbon/wPHr3WMw0GgSp0"
+. 2024-05-07 21:00:00.844 --------------------------------------------------------------------------
+. 2024-05-07 21:00:00.844 Session name: UQAM_0 (Site)
+. 2024-05-07 21:00:00.844 Host name: 173.182.84.12 (Port: 7222)
+. 2024-05-07 21:00:00.844 User name: licor (Password: Yes, Key file: No, Passphrase: No)
+. 2024-05-07 21:00:00.844 Tunnel: No
+. 2024-05-07 21:00:00.844 Transfer Protocol: SFTP (SCP)
+. 2024-05-07 21:00:00.844 Ping type: Off, Ping interval: 30 sec; Timeout: 15 sec
+. 2024-05-07 21:00:00.844 Disable Nagle: No
+. 2024-05-07 21:00:00.844 Proxy: None
+. 2024-05-07 21:00:00.844 Send buffer: 262144
+. 2024-05-07 21:00:00.844 Compression: No
+. 2024-05-07 21:00:00.844 Bypass authentication: No
+. 2024-05-07 21:00:00.844 Try agent: Yes; Agent forwarding: No; KI: Yes; GSSAPI: Yes
+. 2024-05-07 21:00:00.844 GSSAPI: KEX: No; Forwarding: No; Libs: gssapi32,sspi,custom; Custom: 
+. 2024-05-07 21:00:00.844 Ciphers: aes,chacha20,aesgcm,3des,WARN,des,blowfish,arcfour; Ssh2DES: No
+. 2024-05-07 21:00:00.844 KEX: ntru-curve25519,ecdh,dh-gex-sha1,dh-group18-sha512,dh-group17-sha512,dh-group16-sha512,dh-group15-sha512,dh-group14-sha1,rsa,WARN,dh-group1-sha1
+. 2024-05-07 21:00:00.844 SSH Bugs: Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto
+. 2024-05-07 21:00:00.844 Simple channel: Yes
+. 2024-05-07 21:00:00.844 Return code variable: Autodetect; Lookup user groups: Auto
+. 2024-05-07 21:00:00.844 Shell: default
+. 2024-05-07 21:00:00.844 EOL: LF, UTF: Auto
+. 2024-05-07 21:00:00.844 Clear aliases: Yes, Unset nat.vars: Yes, Resolve symlinks: Yes; Follow directory symlinks: No
+. 2024-05-07 21:00:00.844 LS: ls -la, Ign LS warn: Yes, Scp1 Comp: No; Exit code 1 is error: No
+. 2024-05-07 21:00:00.844 SFTP Bugs: Auto,Auto
+. 2024-05-07 21:00:00.844 SFTP Server: default
+. 2024-05-07 21:00:00.844 Local directory: C:\Projects\UQAM\Sites\UQAM_0\Flux, Remote directory: /home/licor/data/results, Update: Yes, Cache: Yes
+. 2024-05-07 21:00:00.844 Cache directory changes: Yes, Permanent: Yes
+. 2024-05-07 21:00:00.844 Recycle bin: Delete to: No, Overwritten to: No, Bin path: 
+. 2024-05-07 21:00:00.844 DST mode: Unix
+. 2024-05-07 21:00:00.844 --------------------------------------------------------------------------
+< 2024-05-07 21:00:00.844 Script: Searching for host...
+. 2024-05-07 21:00:00.844 Looking up host "173.182.84.12" for SSH connection
+. 2024-05-07 21:00:00.844 Connecting to 173.182.84.12 port 7222
+. 2024-05-07 21:00:00.899 Connected to 173.182.84.12
+< 2024-05-07 21:00:00.899 Script: Connecting to host...
+. 2024-05-07 21:00:00.899 We claim version: SSH-2.0-WinSCP_release_6.3.3
+. 2024-05-07 21:00:00.899 Connected to 173.182.84.12
+. 2024-05-07 21:00:01.221 Remote version: SSH-2.0-OpenSSH_4.9
+. 2024-05-07 21:00:01.221 We believe remote version has SSH-2 channel request bug
+. 2024-05-07 21:00:01.221 Using SSH protocol version 2
+. 2024-05-07 21:00:01.221 Have a known host key of type rsa2
+. 2024-05-07 21:00:01.270 Doing Diffie-Hellman group exchange
+. 2024-05-07 21:00:01.608 Doing Diffie-Hellman key exchange using 4096-bit modulus and hash SHA-256 with a server-supplied group
+. 2024-05-07 21:00:13.439 Server also has ssh-dss host key, but we don't know it
+. 2024-05-07 21:00:13.439 Host key fingerprint is:
+. 2024-05-07 21:00:13.439 ssh-rsa 2048 SHA256:LJ3p6Q1LLZGyZwPwxxsp4HtgQbon/wPHr3WMw0GgSp0
+< 2024-05-07 21:00:13.439 Script: Authenticating...
+. 2024-05-07 21:00:13.439 Host key matches cached key
+. 2024-05-07 21:00:13.439 Initialised AES-256 SDCTR (AES-NI accelerated) [aes256-ctr] outbound encryption
+. 2024-05-07 21:00:13.439 Initialised HMAC-SHA-1 outbound MAC algorithm
+. 2024-05-07 21:00:13.439 Initialised AES-256 SDCTR (AES-NI accelerated) [aes256-ctr] inbound encryption
+. 2024-05-07 21:00:13.439 Initialised HMAC-SHA-1 inbound MAC algorithm
+! 2024-05-07 21:00:13.601 Using username "licor".
+< 2024-05-07 21:00:13.601 Script: Using username "licor".
+. 2024-05-07 21:00:13.661 Server offered these authentication methods: publickey,password,keyboard-interactive
+. 2024-05-07 21:00:13.661 Attempting keyboard-interactive authentication
+. 2024-05-07 21:00:13.698 Server refused keyboard-interactive authentication
+. 2024-05-07 21:00:13.698 Server offered these authentication methods: publickey,password,keyboard-interactive
+. 2024-05-07 21:00:13.698 Prompt (password, "SSH password", <no instructions>, "&Password: ")
+. 2024-05-07 21:00:13.698 Using stored password.
+< 2024-05-07 21:00:13.698 Script: Authenticating with pre-entered password.
+. 2024-05-07 21:00:13.698 Sent password
+. 2024-05-07 21:00:13.763 Access granted
+. 2024-05-07 21:00:13.763 Opening main session channel
+. 2024-05-07 21:00:13.827 Opened main channel
+. 2024-05-07 21:00:13.956 Started a shell/command
+< 2024-05-07 21:00:13.956 Script: Authenticated.
+. 2024-05-07 21:00:13.956 --------------------------------------------------------------------------
+. 2024-05-07 21:00:13.956 Using SFTP protocol.
+. 2024-05-07 21:00:13.956 Doing startup conversation with host.
+< 2024-05-07 21:00:13.956 Script: Starting the session...
+> 2024-05-07 21:00:13.956 Type: SSH_FXP_INIT, Size: 5, Number: -1
+< 2024-05-07 21:00:14.066 Type: SSH_FXP_VERSION, Size: 38, Number: -1
+. 2024-05-07 21:00:14.066 SFTP version 3 negotiated.
+. 2024-05-07 21:00:14.066 Supports extension posix-rename@openssh.com="1"
+. 2024-05-07 21:00:14.066 We believe the server has signed timestamps bug
+. 2024-05-07 21:00:14.066 We will use UTF-8 strings until server sends an invalid UTF-8 string as with SFTP version 3 and older UTF-8 strings are not mandatory
+. 2024-05-07 21:00:14.066 Limiting packet size to OpenSSH sftp-server limit of 262148 bytes
+. 2024-05-07 21:00:14.066 Changing directory to "/home/licor/data/results".
+. 2024-05-07 21:00:14.066 Getting real path for '/home/licor/data/results'
+> 2024-05-07 21:00:14.066 Type: SSH_FXP_REALPATH, Size: 33, Number: 16
+< 2024-05-07 21:00:14.098 Type: SSH_FXP_NAME, Size: 69, Number: 16
+. 2024-05-07 21:00:14.098 Real path is '/home/licor/data/results'
+. 2024-05-07 21:00:14.098 Trying to open directory "/home/licor/data/results".
+> 2024-05-07 21:00:14.098 Type: SSH_FXP_LSTAT, Size: 33, Number: 263
+< 2024-05-07 21:00:14.165 Type: SSH_FXP_ATTRS, Size: 37, Number: 263
+. 2024-05-07 21:00:14.165 Getting current directory name.
+. 2024-05-07 21:00:14.165 Startup conversation with host finished.
+< 2024-05-07 21:00:14.165 Script: Session started.
+< 2024-05-07 21:00:14.165 Script: Active session: [1] UQAM_0
+> 2024-05-07 21:00:14.173 Script: cd /home/licor/data/summaries
+. 2024-05-07 21:00:14.173 Cached directory change via "/home/licor/data/summaries" to "/home/licor/data/summaries".
+. 2024-05-07 21:00:14.173 Getting current directory name.
+< 2024-05-07 21:00:14.173 Script: /home/licor/data/summaries
+> 2024-05-07 21:00:14.173 Script: lcd C:\Projects\UQAM\Sites\UQAM_0\Flux
+< 2024-05-07 21:00:14.173 Script: C:\Projects\UQAM\Sites\UQAM_0\Flux
+> 2024-05-07 21:00:14.173 Script: get -neweronly *_EP-Summary.txt  
+. 2024-05-07 21:00:14.173 Listing directory "/home/licor/data/summaries".
+> 2024-05-07 21:00:14.173 Type: SSH_FXP_OPENDIR, Size: 35, Number: 523
+< 2024-05-07 21:00:14.231 Type: SSH_FXP_HANDLE, Size: 13, Number: 523
+> 2024-05-07 21:00:14.231 Type: SSH_FXP_READDIR, Size: 13, Number: 780
+< 2024-05-07 21:00:14.326 Type: SSH_FXP_NAME, Size: 535, Number: 780
+> 2024-05-07 21:00:14.326 Type: SSH_FXP_READDIR, Size: 13, Number: 1036
+< 2024-05-07 21:00:14.358 Type: SSH_FXP_STATUS, Size: 28, Number: 1036
+< 2024-05-07 21:00:14.358 Status code: 1
+> 2024-05-07 21:00:14.358 Type: SSH_FXP_CLOSE, Size: 13, Number: 1284
+. 2024-05-07 21:00:14.358 .;d;0;2024-05-07T04:12:35.000Z;4;"root" [0];"root" [0];rwxrwxrwx;1
+. 2024-05-07 21:00:14.358 ..;d;0;1970-01-01T00:00:00.000Z;4;"root" [0];"root" [0];rwxrwxrwx;1
+. 2024-05-07 21:00:14.358 2024-05-06_AIU-2491_EP-Summary.txt;-;22722;2024-05-07T03:42:07.000Z;4;"root" [0];"root" [0];rwxrw-rw-;1
+. 2024-05-07 21:00:14.358 2024-05-07_AIU-2491_EP-Summary.txt;-;64940;2024-05-08T01:32:02.000Z;4;"root" [0];"root" [0];rwxrw-rw-;1
+. 2024-05-07 21:00:14.358 Copying 2 files/directories to local directory "C:\Projects\UQAM\Sites\UQAM_0\Flux" - total size: 87,662
+. 2024-05-07 21:00:14.358   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0100; Resume: S (102400); CalcS: No; Mask: 
+. 2024-05-07 21:00:14.358   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: Yes; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2024-05-07 21:00:14.358   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2024-05-07 21:00:14.358 File: '/home/licor/data/summaries/2024-05-06_AIU-2491_EP-Summary.txt' [2024-05-07T03:42:07.000Z] [22722]
+. 2024-05-07 21:00:14.358 Copying "/home/licor/data/summaries/2024-05-06_AIU-2491_EP-Summary.txt" to local directory started.
+. 2024-05-07 21:00:14.358 Binary transfer mode selected.
+. 2024-05-07 21:00:14.374 Opening remote file.
+> 2024-05-07 21:00:14.374 Type: SSH_FXP_OPEN, Size: 78, Number: 1539
+< 2024-05-07 21:00:14.422 Type: SSH_FXP_STATUS, Size: 24, Number: 1284
+. 2024-05-07 21:00:14.422 Discarding reserved response
+< 2024-05-07 21:00:14.439 Type: SSH_FXP_HANDLE, Size: 13, Number: 1539
+> 2024-05-07 21:00:14.439 Type: SSH_FXP_FSTAT, Size: 13, Number: 1800
+< 2024-05-07 21:00:14.519 Type: SSH_FXP_ATTRS, Size: 37, Number: 1800
+. 2024-05-07 21:00:14.519 Confirming overwriting of file.
+. 2024-05-07 21:00:14.519 Source file timestamp is [2024-05-07T03:42:07.000Z], destination timestamp is [2024-05-07T03:42:07.000Z], will not overwrite
+> 2024-05-07 21:00:14.519 Type: SSH_FXP_CLOSE, Size: 13, Number: 2052
+* 2024-05-07 21:00:14.519 (ESkipFile) 
+. 2024-05-07 21:00:14.519 File: '/home/licor/data/summaries/2024-05-07_AIU-2491_EP-Summary.txt' [2024-05-08T01:32:02.000Z] [64940]
+. 2024-05-07 21:00:14.519 Copying "/home/licor/data/summaries/2024-05-07_AIU-2491_EP-Summary.txt" to local directory started.
+. 2024-05-07 21:00:14.521 Binary transfer mode selected.
+. 2024-05-07 21:00:14.521 Opening remote file.
+> 2024-05-07 21:00:14.521 Type: SSH_FXP_OPEN, Size: 78, Number: 2307
+< 2024-05-07 21:00:14.567 Type: SSH_FXP_STATUS, Size: 24, Number: 2052
+. 2024-05-07 21:00:14.567 Discarding reserved response
+< 2024-05-07 21:00:14.567 Type: SSH_FXP_HANDLE, Size: 13, Number: 2307
+> 2024-05-07 21:00:14.567 Type: SSH_FXP_FSTAT, Size: 13, Number: 2568
+< 2024-05-07 21:00:14.632 Type: SSH_FXP_ATTRS, Size: 37, Number: 2568
+. 2024-05-07 21:00:14.632 Confirming overwriting of file.
+. 2024-05-07 21:00:14.632 Source file timestamp is [2024-05-08T01:32:02.000Z], destination timestamp is [2024-05-08T01:32:02.000Z], will not overwrite
+> 2024-05-07 21:00:14.632 Type: SSH_FXP_CLOSE, Size: 13, Number: 2820
+* 2024-05-07 21:00:14.632 (ESkipFile) 
+. 2024-05-07 21:00:14.632 Copying finished: Transferred: 0, Elapsed: 0:00:00, CPS: 0/s
+> 2024-05-07 21:00:14.632 Script: cd /home/licor/data/results
+. 2024-05-07 21:00:14.632 Cached directory change via "/home/licor/data/results" to "/home/licor/data/results".
+. 2024-05-07 21:00:14.632 Getting current directory name.
+< 2024-05-07 21:00:14.632 Script: /home/licor/data/results
+> 2024-05-07 21:00:14.632 Script: lcd C:\Projects\UQAM\Sites\UQAM_0\Flux
+< 2024-05-07 21:00:14.632 Script: C:\Projects\UQAM\Sites\UQAM_0\Flux
+> 2024-05-07 21:00:14.632 Script: get -neweronly *.zip
+. 2024-05-07 21:00:14.632 Listing directory "/home/licor/data/results".
+> 2024-05-07 21:00:14.632 Type: SSH_FXP_OPENDIR, Size: 33, Number: 3083
+< 2024-05-07 21:00:14.712 Type: SSH_FXP_STATUS, Size: 24, Number: 2820
+. 2024-05-07 21:00:14.712 Discarding reserved response
+< 2024-05-07 21:00:14.760 Type: SSH_FXP_HANDLE, Size: 13, Number: 3083
+> 2024-05-07 21:00:14.760 Type: SSH_FXP_READDIR, Size: 13, Number: 3340
+< 2024-05-07 21:00:14.845 Type: SSH_FXP_NAME, Size: 415, Number: 3340
+> 2024-05-07 21:00:14.845 Type: SSH_FXP_READDIR, Size: 13, Number: 3596
+< 2024-05-07 21:00:14.908 Type: SSH_FXP_STATUS, Size: 28, Number: 3596
+< 2024-05-07 21:00:14.908 Status code: 1
+> 2024-05-07 21:00:14.908 Type: SSH_FXP_CLOSE, Size: 13, Number: 3844
+. 2024-05-07 21:00:14.908 .;d;0;2024-01-01T05:33:22.000Z;4;"root" [0];"root" [0];rwxrwxrwx;1
+. 2024-05-07 21:00:14.908 ..;d;0;1970-01-01T00:00:00.000Z;4;"root" [0];"root" [0];rwxrwxrwx;1
+. 2024-05-07 21:00:14.908 2023;d;0;2023-12-02T18:00:40.000Z;4;"root" [0];"root" [0];rwxrwxrwx;1
+. 2024-05-07 21:00:14.908 2024;d;0;2024-05-05T21:30:48.000Z;4;"root" [0];"root" [0];rwxrwxrwx;1
+< 2024-05-07 21:00:14.908 Script: No file matching '*.zip' found.
+. 2024-05-07 21:00:14.908 Copying 0 files/directories to local directory "C:\Projects\UQAM\Sites\UQAM_0\Flux" - total size: 0
+. 2024-05-07 21:00:14.908   PrTime: Yes; PrRO: No; Rght: rw-r--r--; PrR: No (No); FnCs: N; RIC: 0100; Resume: S (102400); CalcS: No; Mask: 
+. 2024-05-07 21:00:14.908   TM: B; ClAr: No; RemEOF: No; RemBOM: No; CPS: 0; NewerOnly: Yes; EncryptNewFiles: Yes; ExcludeHiddenFiles: No; ExcludeEmptyDirectories: No; InclM: ; ResumeL: 0
+. 2024-05-07 21:00:14.908   AscM: *.*html; *.htm; *.txt; *.php; *.php3; *.cgi; *.c; *.cpp; *.h; *.pas; *.bas; *.tex; *.pl; *.js; .htaccess; *.xtml; *.css; *.cfg; *.ini; *.sh; *.xml
+. 2024-05-07 21:00:14.908 Copying finished: Transferred: 0, Elapsed: 0:00:00, CPS: 0/s
+> 2024-05-07 21:00:14.908 Script: close
+. 2024-05-07 21:00:14.908 Closing connection.
+. 2024-05-07 21:00:14.908 Sending special code: 1
+. 2024-05-07 21:00:15.023 Session sent command exit status 0
+. 2024-05-07 21:00:15.023 Main session channel closed
+. 2024-05-07 21:00:15.023 All channels closed
