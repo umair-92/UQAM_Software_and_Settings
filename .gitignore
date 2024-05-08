@@ -1,9 +1,9 @@
 .DS_Store
 .lintr
 
-log/*.*
-Database/*.*
-Sites/*.* 
+
+Database/
+Sites/
 
 # Windows default autosave extension
 *.asv
