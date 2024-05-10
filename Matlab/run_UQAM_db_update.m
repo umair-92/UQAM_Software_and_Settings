@@ -22,7 +22,7 @@ end
 fprintf('===============================\n');
 fprintf('***** run_UQAM_db_update ******\n');
 fprintf('===============================\n');
-
+fprintf('%s\n',datetime);
 % Run database updates for on-line data
 db_update_UQAM_site(yearIn,sitesIn);
 
@@ -39,7 +39,7 @@ for currentSiteID = sitesIn
     end
 
 end
-
-fprintf('\n\n**** run_UQAM_db_update finished in %6.1f sec.******\n',seconds(datetime-startTime));
+fprintf('\n\n%s\n',datetime);
+fprintf('**** run_UQAM_db_update finished in %6.1f sec.******\n',seconds(datetime-startTime));
 fprintf('=====================================================\n\n\n');
 
