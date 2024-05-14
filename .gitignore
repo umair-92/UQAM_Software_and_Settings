@@ -2,7 +2,7 @@
 .lintr
 
 
-Database/
+#Database/
 Sites/
 
 # Windows default autosave extension

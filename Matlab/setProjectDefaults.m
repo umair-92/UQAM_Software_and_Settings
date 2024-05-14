@@ -20,6 +20,8 @@ if ~exist(projectPath,'dir')
 end
 
 UserData = get(0,'UserData');
+% Read the following from the project_global.yml file:
+UserData.biomet.projectPath   = fullfile(projectPath);
 UserData.biomet.database_path   = fullfile(projectPath,'Database');
 UserData.biomet.sites_path      = fullfile(projectPath,'Sites');
 set(0,'UserData',UserData);

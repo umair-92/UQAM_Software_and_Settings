@@ -29,7 +29,6 @@ path('c:\biomet.net\matlab\new_eddy',path);
 path('c:\biomet.net\MATLAB\SystemComparison',path);         % use this line on the workstations
 path('c:\biomet.net\matlab\Micromet',path);
 
-path(user_dir,path);
 
 % If the user wants to customize his Matlab environment he may create
 % the localrc.m file in Matlab's main directory
