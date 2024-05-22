@@ -7,5 +7,7 @@ FTP/log/
 # Windows default autosave extension
 *.asv
 
+*.log
+
 # OSX / *nix default autosave extension
 *.m~

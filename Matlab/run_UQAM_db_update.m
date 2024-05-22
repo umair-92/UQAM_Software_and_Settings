@@ -33,7 +33,7 @@ for currentSiteID = sitesIn
     % Take time-lapse photos 
     switch siteID
         case 'UQAM_0'
-            netCam_Link = 'http://173.182.84.12:4925/netcam.jpg';
+            netCam_Link = 'http://68.182.132.135:4925/netcam.jpg';
             take_Phenocam_picture(siteID,netCam_Link,0:24)
         otherwise
     end

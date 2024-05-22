@@ -1,19 +1,19 @@
 ===============================
 ***** run_UQAM_db_update ******
 ===============================
-13-May-2024 19:30:29
+21-May-2024 21:30:29
 
 **** Processing Year: 2024, Site: UQAM_0   *************
   UQAM_0_Met_30m:  Number of files processed = 0, Number of 30-minute periods = 0
   UQAM_0_Met_05m:  Number of files processed = 0, Number of 5-minute periods = 0
   UQAM_0_RawData_05m:  Number of files processed = 0, Number of 5-minute periods = 0
-  UQAM_0: SmartFlux:  Number of files processed = 1, Number of HHours = 41
+  UQAM_0: SmartFlux:  Number of files processed = 0, Number of HHours = 0
   UQAM_0: EddyPro:  Number of files processed = 0, Number of HHours = 0
   UQAM_0  EddyPro_biomet:  Number of files processed = 0, Number of HHours = 0
 
 
-13-May-2024 19:30:41
-**** run_UQAM_db_update finished in   12.0 sec.******
+21-May-2024 21:30:37
+**** run_UQAM_db_update finished in    8.1 sec.******
 =====================================================
 
 

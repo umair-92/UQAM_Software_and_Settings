@@ -9,13 +9,15 @@ try
 catch
 end
 
-% try
-%     fprintf('Start ECCC processing\n');
-%     run_ECCC_climate_station_update
-%     fprintf('Finish ECCC processing\n');
-% catch ME
-%     disp(ME);
-% end
+try
+    fprintf('Start ECCC processing\n');
+    monthRange = month(datetime)+[-1:0];
+    stationIDs = [27646];
+    run_ECCC_climate_station_update(year(datetime),monthRange,stationIDs,db_pth_root)
+    fprintf('Finish ECCC processing\n');
+catch ME
+    disp(ME);
+end
 fprintf('Finished: %s\n',datetime);
 fprintf('-------------------------------------------------\n')
 diary off
