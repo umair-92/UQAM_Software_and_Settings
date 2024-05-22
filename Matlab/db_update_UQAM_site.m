@@ -59,7 +59,7 @@ for cntYears=1:length(yearIn)
             % set paths
             progressList_Pth    = fullfile(pthLog,progressListName); 
             outputPath          = fullfile(pth_db,'yyyy',siteID,dbFolderName);
-            loggerTable_pth     = [fullfile(pthSites,siteID,'Met',tableName) '.' strYear '*'];
+            loggerTable_pth     = [fullfile(pthSites,siteID,'Met',tableName) '.*'];
 
             % Process csv -> database
             [numOfFilesProcessed,numOfDataPointsProcessed]= ...
