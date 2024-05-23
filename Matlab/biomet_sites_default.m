@@ -1,6 +1,3 @@
 function folderSites = biomet_sites_default
-fPath = mfilename('fullpath');
-fPath = fileparts(fPath);
-ind = find(fPath==filesep);
-projectFolder = fPath(1:ind(end)); 
-folderSites = fullfile(projectFolder,'Sites');
+% This file is generated automatically by set_TAB_project('C:\Projects\UQAM\')
+folderSites = 'C:\Projects\UQAM\Sites';

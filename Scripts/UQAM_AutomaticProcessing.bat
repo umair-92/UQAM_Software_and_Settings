@@ -20,7 +20,8 @@ REM ---------------------------------------------
 REM  Data base processing and data upload to Web
 REM ---------------------------------------------
 REM -nodesktop -nosplash -minimize
-"C:\Program Files\MATLAB\R2024a\bin\matlab.exe"  -noFigureWindows -batch "try; cd C:\Projects\UQAM\Matlab; startup;run_UQAM_db_update; catch ME; disp(ME);end; quit" > C:\Projects\UQAM\Scripts\Automatic_site_data_processing.log
+@REM "C:\Program Files\MATLAB\R2024a\bin\matlab.exe"  -noFigureWindows -batch "try; cd C:\Projects\UQAM\Matlab; startup;run_UQAM_db_update; catch ME; disp(ME);end; quit" > C:\Projects\UQAM\Scripts\Automatic_site_data_processing.log
+"C:\Program Files\MATLAB\R2024a\bin\matlab.exe"  -noFigureWindows -batch "try; set_TAB_project('C:\Projects\UQAM\');run_UQAM_db_update; catch ME; disp(ME);end; quit" > C:\Projects\UQAM\Scripts\Automatic_site_data_processing.log
 
 
 exit

@@ -1,6 +1,3 @@
 function folderDatabase = biomet_database_default
-fPath = mfilename('fullpath');
-fPath = fileparts(fPath);
-ind = find(fPath==filesep);
-projectFolder = fPath(1:ind(end)); 
-folderDatabase = fullfile(projectFolder,'Database');
+% This file is generated automatically by set_TAB_project.m('C:\Projects\UQAM\')
+folderDatabase = 'C:\Projects\UQAM\Database';
