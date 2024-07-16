@@ -16,6 +16,13 @@ REM -------------------------------
 start /min winscp.exe  /script=C:\Projects\UQAM\Scripts\FTP\UQAM_0_SmartFlux_Download.txt  /log="C:\Projects\UQAM\Scripts\FTP\log\UQAM_0_SmartFlux_download.log"
 timeout 10 > nul
 
+REM -------------------------------
+REM  UQAM_1
+REM -------------------------------
+@del C:\Projects\UQAM\Scripts\FTP\log\UQAM_1_SmartFlux_download.log
+start /min winscp.exe  /script=C:\Projects\UQAM\Scripts\FTP\UQAM_1_SmartFlux_Download.txt  /log="C:\Projects\UQAM\Scripts\FTP\log\UQAM_1_SmartFlux_download.log"
+timeout 10 > nul
+
 REM ---------------------------------------------
 REM  Data base processing and data upload to Web
 REM ---------------------------------------------

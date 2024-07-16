@@ -1,0 +1,15 @@
+option batch on
+option confirm off
+
+open UQAM_1
+
+cd /home/licor/data/summaries
+lcd C:\Projects\UQAM\Sites\UQAM_1\Flux
+get -neweronly *_EP-Summary.txt  
+
+cd /home/licor/data/results
+lcd C:\Projects\UQAM\Sites\UQAM_1\Flux
+get -neweronly *.zip
+
+close
+exit

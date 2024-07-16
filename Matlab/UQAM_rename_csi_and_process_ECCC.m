@@ -1,12 +1,18 @@
 function UQAM_rename_csi_and_process_ECCC
+
+arg_default('sitesIn',{'UQAM_0','UQAM_1'});        % default - all sites
 pthSites = biomet_sites_default;
 
 diary(fullfile(pthSites,'UQAM_rename_csi_and_process_ECCC.log'));
 fprintf('=================================================\n')
 fprintf('Started: %s\n',datetime);
-try
-    timestamp_csi_files(fullfile(pthSites,'UQAM_0','Met'));
-catch
+
+for currentSiteID = sitesIn
+    siteID = char(currentSiteID);
+    try
+        timestamp_csi_files(fullfile(pthSites,siteID,'Met'));
+    catch
+    end
 end
 
 try
