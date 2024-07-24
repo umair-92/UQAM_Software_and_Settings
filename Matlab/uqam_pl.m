@@ -1,4 +1,4 @@
-function [t,x] = UQAM_pl(ind, year, siteID, select, fig_num_inc,flgPause) 
+function [t,x] = uqam_pl(ind, year, siteID, select, fig_num_inc,flgPause) 
 %
 % [t,x] = UQAM_pl(ind, year,siteID, select, fig_num_incflgPause)
 %
@@ -72,7 +72,7 @@ trace_path  = char(fullfile(pthSite,'MET','TA_1_1_1_AVG'),...
                    fullfile(pthSite,'MET','TA_1_2_1_AVG'),...
                    fullfile(pthSite,'Flux','air_temperature')...
                    );
-tempOffset = [0 0 0 ];   %273.15 273.15];
+tempOffset = [0 0 273.15];   %273.15 273.15];
 trace_legend = char('T_{HMP-1}','T_{HMP-2}','SonicT');
 trace_units = 'T_{air}(degC)';
 y_axis      = [];
@@ -187,16 +187,9 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 % 24V Battery Voltage
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Battery Voltage');
-switch siteID
-    case {'HOGG','YOUNG','OHM'}
-        trace_path  = char(fullfile(pthSite,'flux','DRM_V_MAIN_1_1_1'), ...
-                           fullfile(pthSite,'monitorSites',sprintf('%s.DSIVin.avg',siteID)));
-        trace_legend = char('DRM_V_MAIN_1_1_1','DSIVin.avg');
-    otherwise
-        trace_path  = char(fullfile(pthSite,'MET','SYS_PBox_Batt_Volt_Avg'));
-        trace_legend = [];
-end
-
+trace_path  = char( fullfile(pthSite,'flux','hit_vin_mean')...
+                   );
+trace_legend = char('hit-vin-mean');
 trace_units = '24V Battery Voltage (V)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
@@ -221,29 +214,11 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Cumulative Battery Current');
 switch siteID
-    case 'BB1'
-        Ibb1 = -read_sig( fullfile(pthSite,'MET', 'SYS_Batt_DCCurrent_Avg'), ind,year, t, 0 );
-        Ibb1(isnan(Ibb1)) = 0;
-        if tv(ind(1))<datenum(2021,11,17)
-            % For this period, process the second battery box too.
-            Ibb2 = -read_sig( fullfile(pthSite,'MET', 'SYS_Batt_DCCurrent2_Avg'), ind,year, t, 0 );
-            Ibb2(isnan(Ibb2)) = 0;
-            trace_path = (1+cumsum([Ibb1/600 Ibb2/800]/2))*100;  % Ah / Ah
-        else
-            trace_path = (1+cumsum(Ibb1/2/1200))*100;  % Ah / Ah
-            %trace_path = cumsum(Ibb1)/2;
-        end
-
-        trace_legend = char('Batt 1','Batt 2');
-
     case {'BB2','DSM','RBM'}
         Ibb1 = read_sig( fullfile(pthSite,'MET', 'SYS_Batt_DCCurrent_Avg'), ind,year, t, 0 );
         Ibb1(isnan(Ibb1))=0;
         trace_path = (1+cumsum(Ibb1/2)/2600)*100;    % Ah / Ah
         trace_legend = [];
-    case {'HOGG','YOUNG','OHM'}
-        trace_path = [];
-        fig_num = fig_num-1;
 end
 trace_units = 'Cummulative Current (%)';
 y_axis      = [];
@@ -579,6 +554,24 @@ trace_units = 'Delay Times (Seconds)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num,[],[],char('o') );
+indAxes = indAxes+1; allAxes(indAxes) = gca;
+
+%----------------------------------------------------------
+% Soil moisture
+%----------------------------------------------------------
+trace_name  = sprintf('%s: %s',siteID,' Soil Moisture');
+
+trace_path  = char( fullfile(pthSite,'met','a_CS650_1_1_1_Avg'),...
+                    fullfile(pthSite,'met','a_CS650_1_2_1_Avg'),...
+                    fullfile(pthSite,'met','a_CS650_1_3_1_Avg'),...
+                    fullfile(pthSite,'met','a_CS650_1_4_1_Avg')...
+                   );
+
+trace_legend = char('1','2','3','4');
+trace_units = '(%)'; 
+y_axis      = [];
+fig_num = fig_num + fig_num_inc;
+x = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 linkaxes(allAxes,'x');
