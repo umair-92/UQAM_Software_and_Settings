@@ -70,10 +70,11 @@ trace_name  = sprintf('%s: %s',siteID,' Air Temperature');
 
 trace_path  = char(fullfile(pthSite,'MET','TA_1_1_1_AVG'),...
                    fullfile(pthSite,'MET','TA_1_2_1_AVG'),...
-                   fullfile(pthSite,'Flux','air_temperature')...
+                   fullfile(pthSite,'Flux','air_temperature'),...
+                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','Tair')...
                    );
-tempOffset = [0 0 273.15];   %273.15 273.15];
-trace_legend = char('T_{HMP-1}','T_{HMP-2}','SonicT');
+tempOffset = [0 0 273.15 0];   %273.15 273.15];
+trace_legend = char('T_{HMP-1}','T_{HMP-2}','SonicT','ECCC 10732');
 trace_units = 'T_{air}(degC)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
@@ -86,9 +87,10 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 trace_name  = sprintf('%s: %s',siteID,' Relative Humidity');
 
 trace_path  = char(fullfile(pthSite,'MET','RH_1_1_1_AVG'),...
-                   fullfile(pthSite,'MET','RH_1_2_1_AVG')...
+                   fullfile(pthSite,'MET','RH_1_2_1_AVG'),...
+                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','RH')...
                    );
-trace_legend = char('RH_{HMP-1}','RH_{HMP-2}');
+trace_legend = char('RH_{HMP-1}','RH_{HMP-2}','ECCC 10732');
 trace_units = 'RH (%)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
@@ -583,11 +585,14 @@ end
 %------------------------------------------
 if select == 1 %diagnostics only
     childn = get(0,'children');
-    childn = sort(childn);
-    N = length(childn);
+    allFig = {childn.Number};
+    allfFig = cell2mat(allFig);
+    allfFig = sort(allfFig);
+    N = length(allfFig);
     for i=1:N
         if i < 200
-            figure(i);
+            figNum = get(allfFig(i),'number');
+            figure(figNum);
             pause;
         end
     end

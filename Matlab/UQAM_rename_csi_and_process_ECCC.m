@@ -18,7 +18,7 @@ end
 try
     fprintf('Start ECCC processing\n');
     monthRange = month(datetime)+[-1:0];
-    stationIDs = [27646];
+    stationIDs = [8321 10732 27646];
     run_ECCC_climate_station_update(year(datetime),monthRange,stationIDs,db_pth_root)
     fprintf('Finish ECCC processing\n');
 catch ME
