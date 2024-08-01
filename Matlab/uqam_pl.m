@@ -6,21 +6,13 @@ function [t,x] = uqam_pl(ind, year, siteID, select, fig_num_inc,flgPause)
 %   the UBC data-base formated files.
 %
 % (c) c) Nesic Zoran         File created:       Jul 15, 2024      
-%                            Last modification:  Jul 15, 2024
+%                            Last modification:  Jul 31, 2024
 %           
 %
 
 % Revisions:
 %
 
-
-if ind(1) > datenum(0,3,15) & ind(1) < datenum(0,11,15) %#ok<*AND2>
-    WINTER_TEMP_OFFSET = 0;
-else
-    WINTER_TEMP_OFFSET = 10;
-end
-
-%colordef white %#ok<COLORDEF>
 arg_default('fig_num_inc',1);
 arg_default('select',1);
 arg_default('siteID','UQAM_1');
@@ -28,13 +20,6 @@ arg_default('flgPause',1);              % default is show one figure and pause
 
 [yearX,~,~] = datevec(now);             % if parameter "year" not given
 arg_default('year',yearX);              % assume current year
-
-% create default database path
-% NOTE: make sure that there is a file
-%       /UBC_PC_Setup/PC_Specific/micromet_database_default.m
-%       that has the correct database path set here:
-%       x = 'p:/DATABASE';
-%       (use the correct path to Database folder for your system)
 
 pthSite = biomet_path('yyyy',siteID);
 
@@ -70,11 +55,11 @@ trace_name  = sprintf('%s: %s',siteID,' Air Temperature');
 
 trace_path  = char(fullfile(pthSite,'MET','TA_1_1_1_AVG'),...
                    fullfile(pthSite,'MET','TA_1_2_1_AVG'),...
-                   fullfile(pthSite,'Flux','air_temperature'),...
-                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','Tair')...
+                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','Tair'),...
+                   fullfile(pthSite,'Flux','air_temperature')...                   
                    );
-tempOffset = [0 0 273.15 0];   %273.15 273.15];
-trace_legend = char('T_{HMP-1}','T_{HMP-2}','SonicT','ECCC 10732');
+tempOffset = [0 0 0 273.15];   %273.15 273.15];
+trace_legend = char('T_{HMP-1}','T_{HMP-2}','ECCC 10732','SonicT');
 trace_units = 'T_{air}(degC)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
@@ -95,6 +80,52 @@ trace_units = 'RH (%)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
+indAxes = indAxes+1; allAxes(indAxes) = gca;
+
+
+%----------------------------------------------------------
+% Rain gauges
+%----------------------------------------------------------
+trace_name  = sprintf('%s: %s',siteID,'Precipitation');
+
+trace_path  = char(fullfile(pthSite,'MET','P_1_1_1_tot'),...
+                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','Precip')...
+                   );
+trace_legend = char('TB-Site','TB-ECCC');
+
+trace_units = 'Precipitation (mm/30-min)';
+y_axis      = [];
+fig_num = fig_num + fig_num_inc;
+x = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
+indAxes = indAxes+1; allAxes(indAxes) = gca;
+% remember xlim, you'll need it to rescale cumulative rain
+originalXlim = xlim;
+
+%----------------------------------------------------------
+% Cumulative rain
+%----------------------------------------------------------
+% *** in case of multiple-year plots it plots only the last year
+indx = find( t_all >= 1 & t_all <= ed );                    % extract the period from
+tx = t_all(indx);                                           % the beginning of the last year
+indNew = [1:length(indx)]+round(GMTshift*48);               % use GMTshift to align the data with time vector
+
+
+trace_name  = sprintf('%s: %s',siteID,'Cumulative Rain (current year only)');
+trace_units = 'Precipitation (mm)';
+trace_legend = char('TB-Site','TB-ECCC');
+y_axis      = [];
+
+trace_path  = char(fullfile(pthSite,'MET','P_1_1_1_tot'));
+[x1,tx_new] = read_sig(trace_path(1,:), indNew,year, tx,0); %#ok<*ASGLU>
+x1(isnan(x1)) = 0; % replace NaNs with 0 so that cumsum can work
+
+trace_path  = char(fullfile(db_pth_root,'yyyy\ECCC\10732\30min','Precip'));
+[x2,tx_new] = read_sig(trace_path(1,:), indNew,year, tx,0); %#ok<*ASGLU>
+x2(isnan(x2)) = 0; % replace NaNs with 0 so that cumsum can work
+
+fig_num = fig_num + fig_num_inc;
+x = plt_msig( [cumsum(x1) cumsum(x2)], ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
+xlim(originalXlim);
 indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 %----------------------------------------------------------
@@ -146,8 +177,10 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 % Wind Speed
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,'Wind Speed');
-trace_path  = char(fullfile(pthSite,'MET','WS'));
-trace_legend = [];
+trace_path  = char(fullfile(pthSite,'MET','WS'),...
+                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','WindSpeed')...
+                  );
+trace_legend = char('MET','ECCC');
 trace_units = '(m/s)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
@@ -158,12 +191,15 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 % Wind Direction
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,'Wind Direction');
-trace_path  = char(fullfile(pthSite,'MET','WD'));
-trace_legend = [];
-trace_units = '(m/s)';
+trace_path  = char(fullfile(pthSite,'MET','WD'),...
+                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','WindDir')...
+                   );
+trace_legend = char('MET','ECCC');
+trace_units = 'deg';
+unitCorrection = [1 10];
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
-x = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
+x = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num,unitCorrection );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 %----------------------------------------------------------
