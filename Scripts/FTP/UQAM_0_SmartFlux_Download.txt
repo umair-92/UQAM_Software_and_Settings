@@ -4,11 +4,11 @@ option confirm off
 open UQAM_0
 
 cd /home/licor/data/summaries
-lcd C:\Projects\UQAM\Sites\UQAM_0\Flux
+lcd Z:\Projects\UQAM\Sites\UQAM_0\Flux
 get -neweronly *_EP-Summary.txt  
 
 cd /home/licor/data/results
-lcd C:\Projects\UQAM\Sites\UQAM_0\Flux
+lcd Z:\Projects\UQAM\Sites\UQAM_0\Flux
 get -neweronly *.zip
 
 close

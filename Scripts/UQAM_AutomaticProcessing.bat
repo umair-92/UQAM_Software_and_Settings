@@ -12,23 +12,23 @@ REM =====================================================
 REM -------------------------------
 REM  UQAM_0
 REM -------------------------------
-@del C:\Projects\UQAM\Scripts\FTP\log\UQAM_0_SmartFlux_download.log
-start /min winscp.exe  /script=C:\Projects\UQAM\Scripts\FTP\UQAM_0_SmartFlux_Download.txt  /log="C:\Projects\UQAM\Scripts\FTP\log\UQAM_0_SmartFlux_download.log"
-timeout 10 > nul
+REM @del Z:\Projects\UQAM\Scripts\FTP\log\UQAM_0_SmartFlux_download.log
+REM start /min winscp.exe  /script=Z:\Projects\UQAM\Scripts\FTP\UQAM_0_SmartFlux_Download.txt  /log="Z:\Projects\UQAM\Scripts\FTP\log\UQAM_0_SmartFlux_download.log"
+REM timeout 10 > nul
 
 REM -------------------------------
 REM  UQAM_1
 REM -------------------------------
-@del C:\Projects\UQAM\Scripts\FTP\log\UQAM_1_SmartFlux_download.log
-start /min winscp.exe  /script=C:\Projects\UQAM\Scripts\FTP\UQAM_1_SmartFlux_Download.txt  /log="C:\Projects\UQAM\Scripts\FTP\log\UQAM_1_SmartFlux_download.log"
+@del Z:\Projects\UQAM\Scripts\FTP\log\UQAM_1_SmartFlux_download.log
+start /min winscp.exe  /script=Z:\Projects\UQAM\Scripts\FTP\UQAM_1_SmartFlux_Download.txt  /log="Z:\Projects\UQAM\Scripts\FTP\log\UQAM_1_SmartFlux_download.log"
 timeout 10 > nul
 
 REM ---------------------------------------------
 REM  Data base processing and data upload to Web
 REM ---------------------------------------------
 REM -nodesktop -nosplash -minimize
-@REM "C:\Program Files\MATLAB\R2024a\bin\matlab.exe"  -noFigureWindows -batch "try; cd C:\Projects\UQAM\Matlab; startup;run_UQAM_db_update; catch ME; disp(ME);end; quit" > C:\Projects\UQAM\Scripts\Automatic_site_data_processing.log
-"C:\Program Files\MATLAB\R2024a\bin\matlab.exe"  -noFigureWindows -batch "try; set_TAB_project('C:\Projects\UQAM\');run_UQAM_db_update; catch ME; disp(ME);end; quit" > C:\Projects\UQAM\Scripts\Automatic_site_data_processing.log
+@REM "C:\Program Files\MATLAB\R2024a\bin\matlab.exe"  -noFigureWindows -batch "try; cd Z:\Projects\UQAM\Matlab; startup;run_UQAM_db_update; catch ME; disp(ME);end; quit" > Z:\Projects\UQAM\Scripts\Automatic_site_data_processing.log
+"C:\Program Files\MATLAB\R2024a\bin\matlab.exe"  -noFigureWindows -batch "try; set_TAB_project('Z:\Projects\UQAM\');run_UQAM_db_update; catch ME; disp(ME);end; quit" > Z:\Projects\UQAM\Scripts\Automatic_site_data_processing.log
 
 
 exit
