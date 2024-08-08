@@ -12,7 +12,7 @@ function structProject = pretend_configYAML(projectPath)
 %-------- start yaml ---------------------
 projectName = 'UQAM';
 structProject.projectName   = projectName;
-structProject.path          = fullfile(projectPath,structProject.projectName);
+structProject.path          = fullfile(projectPath);
 structProject.databasePath  = fullfile(structProject.path,'Database');
 structProject.sitesPath     = fullfile(structProject.path,'Sites');
 structProject.matlabPath    = fullfile(structProject.path,'Matlab');
