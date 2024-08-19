@@ -1,6 +1,6 @@
-xx=set_TAB_project('z:\Projects\UQAM');
+xx=set_TAB_project('Z:\uqam-site');
 addpath('C:\Biomet.net\matlab\Apps\')
-appMonitorLicorEC('z:\Projects\UQAM')
+appMonitorLicorEC('Z:\uqam-site')
 clc
 fprintf(2,' **** DO NOT USE THIS WINDOW ****\n');
 
