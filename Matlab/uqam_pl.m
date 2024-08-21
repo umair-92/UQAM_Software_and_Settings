@@ -612,6 +612,51 @@ fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
 
+%----------------------------------------------------------
+% CO2
+%----------------------------------------------------------
+trace_name  = sprintf('%s: %s',siteID,' CO_2');
+
+trace_path  = char( fullfile(pthSite,'flux','co2_mixing_ratio')...
+                   );
+
+trace_legend = [];
+trace_units = '(umol/mol)'; 
+y_axis      = [];
+fig_num = fig_num + fig_num_inc;
+x = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
+indAxes = indAxes+1; allAxes(indAxes) = gca;
+
+%----------------------------------------------------------
+% CH4
+%----------------------------------------------------------
+trace_name  = sprintf('%s: %s',siteID,' CH_4');
+
+trace_path  = char( fullfile(pthSite,'flux','ch4_mixing_ratio')...
+                   );
+
+trace_legend = [];
+trace_units = '(umol/mol)'; 
+y_axis      = [];
+fig_num = fig_num + fig_num_inc;
+x = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
+indAxes = indAxes+1; allAxes(indAxes) = gca;
+
+%----------------------------------------------------------
+% H2O
+%----------------------------------------------------------
+trace_name  = sprintf('%s: %s',siteID,' H_2O');
+
+trace_path  = char( fullfile(pthSite,'flux','h2o_mixing_ratio')...
+                   );
+
+trace_legend = [];
+trace_units = '(mmol/mol)'; 
+y_axis      = [];
+fig_num = fig_num + fig_num_inc;
+x = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
+indAxes = indAxes+1; allAxes(indAxes) = gca;
+
 linkaxes(allAxes,'x');
 
 
