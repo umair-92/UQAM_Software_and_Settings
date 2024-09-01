@@ -225,9 +225,10 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 % 24V Battery Voltage
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Battery Voltage');
-trace_path  = char( fullfile(pthSite,'flux','hit_vin_mean')...
+trace_path  = char( fullfile(pthSite,'flux','hit_vin_mean'),...
+                    fullfile(pthSite,'flux','vin_sf_mean')...
                    );
-trace_legend = char('hit-vin-mean');
+trace_legend = char('hit-vin-mean','vin_sf_mean');
 trace_units = '24V Battery Voltage (V)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
@@ -268,28 +269,12 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 %----------------------------------------------------------
 % System Voltage
 %----------------------------------------------------------
-trace_name  = sprintf('%s: %s',siteID,' Instrument Voltage');
-switch siteID
-    case 'BB1'
-        trace_path  = char(fullfile(pthSite,'MET','SYS_PBox_Batt_Volt_Avg'),...
-                           fullfile(pthSite,'MET','SYS_PBox_Batt_Volt2_Avg'),...
-                           fullfile(pthSite,'MET','SYS_CR1000_Batt_Volt_Avg')...
-                      );
-        trace_legend = char('Battery #1','Battery #2','Logger');
-    case {'BB2','DSM','RBM'}
-        trace_path  = char(fullfile(pthSite,'MET','SYS_PBox_Batt_Volt_Avg'),...
-                          fullfile(pthSite,'MET','SYS_CR1000_Batt_Volt_Avg')...                           
-                      );
-        trace_legend = char('Power Supply','Logger');
-    case {'HOGG','YOUNG','OHM'}
-        trace_path  = char(fullfile(pthSite,'flux','DRM_V_BATTERY_1_1_1'),...
-                           fullfile(pthSite,'flux','VIN_1_1_1'),...
-                           fullfile(pthSite,'flux','vin_sf_mean')...
-                      );
-        trace_legend = char('DRM V BATTERY','V_{IN} 1.1.1','vin sf mean');      
-end
+trace_name  = sprintf('%s: %s',siteID,'Logger Voltage');
 
-trace_units = 'System Voltage (V)';
+trace_path  = char(fullfile(pthSite,'flux','Voltage_12V_Avg'),...
+    fullfile(pthSite,'met','SYS_Logger_Batt_Min'));
+trace_legend = char('Voltage 12V Avg','SYS Logger Batt Min');      
+trace_units = 'Instrument Voltage (V)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 sysVoltage = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
@@ -340,42 +325,9 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 % System Temperatures
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' System Temperatures');
-switch siteID
-    case 'BB1'
-        if tv(ind(1))<datenum(2021,11,17)
-            trace_path  = char(fullfile(pthSite,'MET','SYS_BatteryBoxTC_Avg'),...  
-                       fullfile(pthSite,'MET','SYS_BatteryBoxTC2_Avg'),...  
-                       fullfile(pthSite,'MET','MET_CNR1_TC_Avg'),...
-                       fullfile(pthSite,'MET','SYS_PanelT_CR1000_Avg')...
-                       );
-             trace_legend = char('Battery Box 1','Battery Box 2','CNR1','CR1000');
-        else
-            trace_path  = char(fullfile(pthSite,'MET','SYS_BatteryBoxTC_Avg'),...  
-                       fullfile(pthSite,'MET','SYS_PowerBoxTC_Avg'),...  
-                       fullfile(pthSite,'MET','MET_CNR1_TC_Avg'),...
-                       fullfile(pthSite,'MET','SYS_PanelT_CR1000_Avg')...
-                       );
-             trace_legend = char('Battery Box 1','Battery Box 2','CNR1','CR1000');
-        end
-    case 'BB2'
-        trace_path  = char(fullfile(pthSite,'MET','TC_Batt_Avg'),...  
-                   fullfile(pthSite,'MET','SYS_PanelT_CR1000_Avg'),...  
-                   fullfile(pthSite,'MET','TC_ref_Avg'),...
-                   fullfile(pthSite,'MET','TC_chrgr_body_Avg'),...
-                   fullfile(pthSite,'MET','TC_chrgr_space_Avg')...
-                   );
-        trace_legend = char('Battery Box','CR1000','TC Reference','Charger body','Charger Space');
-    case {'DSM','RBM'}
-        trace_path  = char(fullfile(pthSite,'MET','SYS_BatteryBoxTC_Avg'),...  
-                   fullfile(pthSite,'MET','SYS_PanelT_CR1000_Avg'),...  
-                   fullfile(pthSite,'MET','SYS_PanelT_AM25T_Avg'),...
-                   fullfile(pthSite,'MET','SYS_chargerTC_Avg')...
-                   );
-        trace_legend = char('Battery Box','CR1000','TC Reference','Charger Space');
-    case {'HOGG','YOUNG','OHM'}
-        trace_path = [];
-        fig_num = fig_num-1;
-end
+trace_path  = char(fullfile(pthSite,'MET','SYS_Logger_Temp_Avg')...  
+           );
+trace_legend = char('CR1000x');
 trace_units = 'Temperature (\circC)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
@@ -386,14 +338,8 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 % LI-7200 Thermocouples
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' LI-7200 Thermocouples');
-switch siteID
-    case {'HOGG','YOUNG','OHM'}
-        trace_path = [];
-        fig_num = fig_num-1;
-    otherwise
-        trace_path  = char(fullfile(pthSite,'monitorSites',sprintf('%s.tempIn.avg',siteID)),...
-                           fullfile(pthSite,'monitorSites',sprintf('%s.tempOut.avg',siteID)));
-end
+trace_path  = char(fullfile(pthSite,'monitorSites',sprintf('%s.tempIn.avg',siteID)),...
+                   fullfile(pthSite,'monitorSites',sprintf('%s.tempOut.avg',siteID)));
 trace_legend = char('T_{in}','T_{out}');
 trace_units = 'Temperature (\circC)'; % flowrate_min needs to be converted from m^3/sec *1000*60 (L/min)
 y_axis      = [];
