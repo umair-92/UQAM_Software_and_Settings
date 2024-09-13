@@ -1,0 +1,9 @@
+z:\uqam-site\Sites\UQAM_1\Flux 
+z:\uqam-site\Sites\UQAM_1\Met 
+z:\uqam-site\Sites\UQAM_1\Dataloggers 
+z:\uqam-site\Sites\UQAM_1\EP_Output 
+z:\uqam-site\Sites\UQAM_1\Phenocam 
+z:\uqam-site\Sites\UQAM_1\Photos 
+z:\uqam-site\Sites\UQAM_1\Programs 
+z:\uqam-site\Database
+

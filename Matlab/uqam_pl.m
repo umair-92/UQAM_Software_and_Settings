@@ -280,46 +280,46 @@ fig_num = fig_num + fig_num_inc;
 sysVoltage = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
 
-%----------------------------------------------------------
-% System Power
-%----------------------------------------------------------
-
-trace_name  = sprintf('%s: %s',siteID,' System Power');
-switch siteID
-    case 'BB1'
-        if tv(ind(1))<datenum(2021,11,17)
-            trace_path = sum(-sysVoltage(:,1:2).*sysCurrent(:,1:2),2,'omitnan');
-        else
-            trace_path = sum(-sysVoltage(:,1).*sysCurrent(:,1),2,'omitnan');
-        end
-    case {'BB2','DSM','RBM'}
-        trace_path = sum(sysVoltage(:,1).*sysCurrent,2,'omitnan');
-    case {'HOGG','YOUNG','OHM'}
-        trace_path = [];
-        fig_num = fig_num-1;
-end
-trace_units = 'System Power (W)';
-y_axis      = [];
-fig_num = fig_num + fig_num_inc;
-sysPower = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
-indAxes = indAxes+1; allAxes(indAxes) = gca;
-
-%----------------------------------------------------------
-% System Energy
-%----------------------------------------------------------
-trace_name  = sprintf('%s: %s',siteID,' System Energy');
-switch siteID
-    case {'HOGG','YOUNG','OHM'}
-        trace_path = [];
-        fig_num = fig_num-1;
-    otherwise
-        trace_path = cumsum(sysPower/2,'omitnan');
-end
-trace_units = 'System Energy (Wh)';
-y_axis      = [];
-fig_num = fig_num + fig_num_inc;
-sysEnergy = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
-indAxes = indAxes+1; allAxes(indAxes) = gca;
+% %----------------------------------------------------------
+% % System Power
+% %----------------------------------------------------------
+% 
+% trace_name  = sprintf('%s: %s',siteID,' System Power');
+% switch siteID
+%     case 'BB1'
+%         if tv(ind(1))<datenum(2021,11,17)
+%             trace_path = sum(-sysVoltage(:,1:2).*sysCurrent(:,1:2),2,'omitnan');
+%         else
+%             trace_path = sum(-sysVoltage(:,1).*sysCurrent(:,1),2,'omitnan');
+%         end
+%     case {'BB2','DSM','RBM'}
+%         trace_path = sum(sysVoltage(:,1).*sysCurrent,2,'omitnan');
+%     case {'HOGG','YOUNG','OHM'}
+%         trace_path = [];
+%         fig_num = fig_num-1;
+% end
+% trace_units = 'System Power (W)';
+% y_axis      = [];
+% fig_num = fig_num + fig_num_inc;
+% sysPower = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
+% indAxes = indAxes+1; allAxes(indAxes) = gca;
+% 
+% %----------------------------------------------------------
+% % System Energy
+% %----------------------------------------------------------
+% trace_name  = sprintf('%s: %s',siteID,' System Energy');
+% switch siteID
+%     case {'HOGG','YOUNG','OHM'}
+%         trace_path = [];
+%         fig_num = fig_num-1;
+%     otherwise
+%         trace_path = cumsum(sysPower/2,'omitnan');
+% end
+% trace_units = 'System Energy (Wh)';
+% y_axis      = [];
+% fig_num = fig_num + fig_num_inc;
+% sysEnergy = plt_msig( trace_path, ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
+% indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 %----------------------------------------------------------
 % System Temperatures
