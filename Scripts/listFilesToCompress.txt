@@ -6,4 +6,6 @@ z:\uqam-site\Sites\UQAM_1\Phenocam
 z:\uqam-site\Sites\UQAM_1\Photos 
 z:\uqam-site\Sites\UQAM_1\Programs 
 z:\uqam-site\Database
+z:\uqam-site\Scripts
+z:\uqam-site\Matlab
 
