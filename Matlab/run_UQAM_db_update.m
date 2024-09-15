@@ -55,7 +55,7 @@ for currentSiteID = sitesIn
         end
     end
     % Run cleaning stage 1 and 2
-    fr_automated_cleaning(yearIn,stiesIn);
+    fr_automated_cleaning(yearIn,sitesIn,[1 2]);
 end
 fprintf('\n\n%s\n',datetime);
 fprintf('**** run_UQAM_db_update finished in %6.1f sec.******\n',seconds(datetime-startTime));
