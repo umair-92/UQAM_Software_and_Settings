@@ -72,10 +72,12 @@ structProject.sites.(siteID).dataSources.met.table(tableNum).timeStepMin       =
 structProject.sites.(siteID).dataSources.met.table(tableNum).dbFolderName      = fullfile('Met',structProject.sites.(siteID).dataSources.met.table(tableNum).name);
 
 % ECCC stations
-structProject.sites.(siteID).dataSources.eccc(1).stationsID                    = 27646;
-structProject.sites.(siteID).dataSources.eccc(1).stationsName                  = 'SHAWINIGAN';
-structProject.sites.(siteID).dataSources.eccc(2).stationsID                    = 8321;
-structProject.sites.(siteID).dataSources.eccc(2).stationsName                  = 'TROIS-RIVIERES';
+structProject.sites.(siteID).dataSources.eccc(1).stationsID                    = 10732;
+structProject.sites.(siteID).dataSources.eccc(1).stationsName                  = 'NICOLET';
+% structProject.sites.(siteID).dataSources.eccc(2).stationsID                    = 27646;
+% structProject.sites.(siteID).dataSources.eccc(2).stationsName                  = 'SHAWINIGAN';
+% structProject.sites.(siteID).dataSources.eccc(3).stationsID                    = 8321;
+% structProject.sites.(siteID).dataSources.eccc(3).stationsName                  = 'TROIS-RIVIERES';
 
 
 %-------- end yaml ---------------------------

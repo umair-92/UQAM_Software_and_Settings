@@ -4,11 +4,13 @@ function run_UQAM_db_update(yearIn,sitesIn)
 % This program is based on run_BB_db_update (Micromet- UBC)
 %
 % Zoran Nesic           File created:       May  6, 2024
-%                       Last modification:  Aug 13, 2024
+%                       Last modification:  Sep 14, 2024
 
 %
 % Revisions:
 %
+% Sep 14, 2024 (Zoran)
+%   - Added data cleaning (1st and 2nd stage) for all sitesIn
 % Aug 15, 2024 (Zoran)
 %   - Fixed bug. Proper call for potential_radiation is:
 %       potential_radiation(now+5/48,45.5,73.7)
@@ -21,8 +23,8 @@ function run_UQAM_db_update(yearIn,sitesIn)
 
 
 startTime = datetime;
-arg_default('yearIn',year(startTime));             % default - current year
-arg_default('sitesIn',{'UQAM_0','UQAM_1'});        % default - all sites
+arg_default('yearIn',year(startTime));    % default - current year
+arg_default('sitesIn',{'UQAM_1'});        % default - all sites
 
 if ischar(sitesIn)
     sitesIn = {sitesIn};
@@ -52,6 +54,8 @@ for currentSiteID = sitesIn
             otherwise
         end
     end
+    % Run cleaning stage 1 and 2
+    fr_automated_cleaning(yearIn,stiesIn);
 end
 fprintf('\n\n%s\n',datetime);
 fprintf('**** run_UQAM_db_update finished in %6.1f sec.******\n',seconds(datetime-startTime));
