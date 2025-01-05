@@ -6,12 +6,15 @@ function [t,x] = uqam_pl(ind, year, siteID, select, fig_num_inc,flgPause)
 %   the UBC data-base formated files.
 %
 % (c) c) Nesic Zoran         File created:       Jul 15, 2024      
-%                            Last modification:  Jul 31, 2024
+%                            Last modification:  Jan  2, 2025
 %           
 %
 
 % Revisions:
 %
+% Jan 2, 2025 (Zoran)
+%   - added try/catch/end when setting up xlim for cumulative precip.
+%     Otherwise the program doesn't work well at the beginning of a new year.
 
 arg_default('fig_num_inc',1);
 arg_default('select',1);
@@ -125,8 +128,14 @@ x2(isnan(x2)) = 0; % replace NaNs with 0 so that cumsum can work
 
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( [cumsum(x1) cumsum(x2)], ind, trace_name, trace_legend, year, trace_units, y_axis, t, fig_num );
-xlim(originalXlim);
-indAxes = indAxes+1; allAxes(indAxes) = gca;
+try
+    xlim(originalXlim);
+    indAxes = indAxes+1; allAxes(indAxes) = gca;
+catch
+    close(fig_num);
+    fig_num = fig_num - fig_num_inc;
+end
+
 
 %----------------------------------------------------------
 % CNR4 components

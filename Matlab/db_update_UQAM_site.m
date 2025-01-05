@@ -4,13 +4,21 @@ function db_update_UQAM_site(yearIn,sites)
 %
 %
 % Zorn Nesic            File created:       May  6, 2019        
-%                       Last modification:  May  6, 2024 
+%                       Last modification:  Jan  3, 2025
 %
 
 % function based on db_update_BB_site
 
 % Revisions:
 %
+% Jan 3, 2025 (Zoran)
+%   - Bug fix: Made sure that the function only processes files with the yearIn in the name.
+%     Before it was processing ".*" (instead of ".YYYY*") so at the beginning of each
+%     year it would reprocess ALL files in Sites\MET folder because the progress_List_YYYY 
+%     for that year was empty. Now each progress_List_YYYY should contain only the files
+%     with that year in their names.
+%   - Improvements to the progress messages so user can see which file name patterns 
+%     were looked for processing.
 
 arg_default('yearIn',year(datetime));
 arg_default('sites',{'UQAM_0'});
@@ -59,14 +67,24 @@ for cntYears=1:length(yearIn)
             % set paths
             progressList_Pth    = fullfile(pthLog,progressListName); 
             outputPath          = fullfile(pth_db,'yyyy',siteID,dbFolderName);
-            loggerTable_pth     = [fullfile(pthSites,siteID,'Met',tableName) '.*'];
 
+            % Process logger files with the pattern ".YYYY*" (historical
+            % files)
+            strTablePattern     = [tableName '.' strYear '*'];
+            loggerTable_pth     = fullfile(pthSites,siteID,'Met',strTablePattern);
             % Process csv -> database
             [numOfFilesProcessed,numOfDataPointsProcessed]= ...
-                    fr_TOA5_database(loggerTable_pth,progressList_Pth,outputPath,[],strTimeUnit,missingPointValue);             
-            % [numOfFilesProcessed,numOfDataPointsProcessed] = ...
-            %     fr_site_met_database(loggerTable_pth,[],[],[],progressList_Pth,outputPath,2,0,tableMin,[],missingPointValue);          
-            fprintf('  %s:  Number of files processed = %d, Number of %d-minute periods = %d\n',tableName,...
+                   fr_TOA5_database(loggerTable_pth,progressList_Pth,outputPath,[],strTimeUnit,missingPointValue);             
+            fprintf('  %s:  Number of files processed = %d, Number of %d-minute periods = %d\n',strTablePattern,...
+                numOfFilesProcessed,tableMin,numOfDataPointsProcessed);
+
+            % Process logger files with the pattern ".dat" (current files)
+            strTablePattern     = [tableName '.dat'];
+            loggerTable_pth     = fullfile(pthSites,siteID,'Met',strTablePattern);
+            % Process csv -> database
+            [numOfFilesProcessed,numOfDataPointsProcessed]= ...
+                   fr_TOA5_database(loggerTable_pth,progressList_Pth,outputPath,[],strTimeUnit,missingPointValue);             
+            fprintf('  %s:  Number of files processed = %d, Number of %d-minute periods = %d\n',strTablePattern,...
                 numOfFilesProcessed,tableMin,numOfDataPointsProcessed);
         end
     
@@ -75,12 +93,13 @@ for cntYears=1:length(yearIn)
         %======================================
         try
             outputPath = fullfile(pth_db,'yyyy',siteID,'Flux');
-            inputPath = fullfile(pthSites, siteID, 'Flux', [strYear '*_EP-Summary*.txt']);
+            strEPPattern = [strYear '*_EP-Summary*.txt'];
+            inputPath = fullfile(pthSites, siteID, 'Flux', strEPPattern);
             progressListName    = sprintf('%s_%s_progressList_%s.mat',siteID,'SmartFlux',strYear);
             progressList_Pth    = fullfile(pthLog,progressListName);  
             [numOfFilesProcessed,numOfDataPointsProcessed]= ...
                 fr_EddyPro_database(inputPath,progressList_Pth,outputPath,[],[],missingPointValue);           
-            fprintf('  %s: SmartFlux:  Number of files processed = %d, Number of HHours = %d\n',siteID,numOfFilesProcessed,numOfDataPointsProcessed);
+            fprintf('  %s: SmartFlux:       Number of files (%s) processed = %d, Number of HHours = %d\n',siteID,strEPPattern,numOfFilesProcessed,numOfDataPointsProcessed);
         catch
             fprintf(2,'An error happen while running fr_EddyPro_database (SmartFlux summary files) in db_update_UQAM_site.m\n');
         end
@@ -91,14 +110,14 @@ for cntYears=1:length(yearIn)
         try
             % Run database update for EddyPro recalculations
             outputPath = fullfile(pth_db,'yyyy',siteID,'Flux');
-            inputPath = fullfile(pthSites,siteID,'Flux',...
-                   sprintf('eddypro_%s_%d*_full_output*_adv.csv',siteID,yearIn(cntYears)));
+            strEPPattern = sprintf('eddypro_%s_%d*_full_output*_adv.csv',siteID,yearIn(cntYears));
+            inputPath = fullfile(pthSites,siteID,'Flux',strEPPattern);
             %inputPath = fullfile(pthSites, siteID, 'Flux', [num2str(yearIn(cntYears)) '*_EP-Summary*.txt']);
             progressListName    = sprintf('%s_%s_progressList_%s.mat',siteID,'EddyPro',strYear);
             progressList_Pth    = fullfile(pthLog,progressListName); 
             [numOfFilesProcessed,numOfDataPointsProcessed]= ...
                 fr_EddyPro_database(inputPath,progressList_Pth,outputPath,[],[],missingPointValue);  
-            fprintf('  %s: EddyPro:  Number of files processed = %d, Number of HHours = %d\n',siteID,numOfFilesProcessed,numOfDataPointsProcessed);
+            fprintf('  %s: EddyPro:         Number of files (%s) processed = %d, Number of HHours = %d\n',siteID,strEPPattern,numOfFilesProcessed,numOfDataPointsProcessed);
         catch
             fprintf(2,'An error happen while running fr_EddyPro_database ( EddyPro full_output) in db_update_UQAM_site.m\n');
         end    
@@ -107,13 +126,13 @@ for cntYears=1:length(yearIn)
             % output goes under Flux/biomet
             outputPath = fullfile(pth_db,'yyyy',siteID,'Flux','biomet');                     
             % Path to the source files
-            inputPath = fullfile(pthSites,siteID,'Flux',...
-                               sprintf('eddypro_%s_%d*_biomet*_adv.csv',siteID,yearIn(cntYears)));
+            strEPPattern = sprintf('eddypro_%s_%d*_biomet*_adv.csv',siteID,yearIn(cntYears));
+            inputPath = fullfile(pthSites,siteID,'Flux',strEPPattern);
             progressListName    = sprintf('%s_%s_progressList_%s.mat',siteID,'EddyPro_biomet',strYear);
             progressList_Pth    = fullfile(pthLog,progressListName); 
             % Process the new files
             [numOfFilesProcessed,numOfDataPointsProcessed]= fr_EddyPro_database(inputPath,progressList_Pth,outputPath,[],[],missingPointValue);           
-            fprintf('  %s  EddyPro_biomet:  Number of files processed = %d, Number of HHours = %d\n',siteID,numOfFilesProcessed,numOfDataPointsProcessed);
+            fprintf('  %s: EddyPro_biomet:  Number of files (%s) processed = %d, Number of HHours = %d\n',siteID,strEPPattern,numOfFilesProcessed,numOfDataPointsProcessed);
         catch
             fprintf(2,'An error happen while running fr_EddyPro_database ( EddyPro _biomet_) in db_update_UQAM_site.m\n');
         end
