@@ -2,7 +2,7 @@ function UQAM_process_ECCC
 
 pthSites = biomet_sites_default;
 
-diary(fullfile(pthSites,'UQAM_rename_csi_and_process_ECCC.log'));
+diary(fullfile(pthSites,'UQAM_process_ECCC.log'));
 fprintf('=================================================\n')
 fprintf('Started: %s\n',datetime);
 
