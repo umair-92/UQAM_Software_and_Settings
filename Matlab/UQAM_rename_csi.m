@@ -1,6 +1,6 @@
 function UQAM_rename_csi
 
-arg_default('sitesIn',{UQAM_1'});        % default - all sites
+arg_default('sitesIn',{'UQAM_1'});        % default - all sites
 pthSites = biomet_sites_default;
 
 diary(fullfile(pthSites,'UQAM_rename_csi.log'));

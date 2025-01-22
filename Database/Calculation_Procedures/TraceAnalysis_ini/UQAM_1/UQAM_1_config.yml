@@ -1,5 +1,7 @@
 # Written by Zoran
 # Sep 2, 2024
+# Modified by David
+# Dec, 2025
 
 Metadata:
   siteID: UQAM_1
@@ -7,6 +9,14 @@ Metadata:
   lat: 46.1645
   long: -72.685
   TimeZoneHour: -5
+  northOffset: 285
 
-
+Processing:
+  ThirdsStage:
+    Storage:
+      Apply_Correction: True
+    ReddyProc:
+      Run: True
+    RF_GapFilling:
+      Run: True
 
