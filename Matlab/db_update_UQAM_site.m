@@ -18,12 +18,12 @@ function db_update_UQAM_site(yearIn,sites)
 %     for that year was empty. Now each progress_List_YYYY should contain only the files
 %     with that year in their names.
 %   - Improvements to the progress messages so user can see which file name patterns 
-%     were looked for processing.
+        %     were looked for processing.
 
 arg_default('yearIn',year(datetime));
 arg_default('sites',{'UQAM_0'});
 
-% Logger definitions (to be moved to yml file)
+% Logger definition             s (to be moved to yml file)
 cntLogger = 1;
 loggerInfo(cntLogger).tableName         = 'Met_30m';
 loggerInfo(cntLogger).dbFolderName      = 'Met';

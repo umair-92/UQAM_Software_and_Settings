@@ -4,14 +4,16 @@ function view_uqam(dateRange,siteIDs,flgPause)
 % "view_sites" for UQAM sites
 %
 % Zoran Nesic           File created:       Jul 15, 2024
-%                       Last modification:  Jul 15, 2024
+%                       Last modification:  Apr 11, 2024
 
 % Revisions
 %
+% Apr 11, 2025 (Zoran)
+%  - added UQAM_3
 
 
 arg_default('dateRange',now-10:now)
-arg_default('siteIDs',{'UQAM_1'})
+arg_default('siteIDs',{'UQAM_1','UQAM_3'})
 arg_default('flgPause',1)
 
 % get the year and the index. The index is DOY+1 to match
