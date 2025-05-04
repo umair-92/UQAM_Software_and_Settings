@@ -4,11 +4,17 @@ function run_UQAM_db_update(yearIn,sitesIn)
 % This program is based on run_BB_db_update (Micromet- UBC)
 %
 % Zoran Nesic           File created:       May  6, 2024
-%                       Last modification:  Apr 11, 2025
+%                       Last modification:  Apr 15, 2025
 
 %
 % Revisions:
 %
+% Apr 15, 2025 (Zoran)
+%   - Added UQAM_2
+%   - added try-catch around fr_automated_cleaning
+% Apr 12, 2025 (Zoran)
+%   - bug fix: changed fr_automated_cleaning(yearIn,sitesIn,[1 2]);
+%              to:     fr_automated_cleaning(yearIn,siteID,[1 2]);
 % App 11, 2025 (Zoran)
 %   - Added UQAM_3
 % Sep 14, 2024 (Zoran)
@@ -26,7 +32,7 @@ function run_UQAM_db_update(yearIn,sitesIn)
 
 startTime = datetime;
 arg_default('yearIn',year(startTime));    % default - current year
-arg_default('sitesIn',{'UQAM_1','UQAM_3'});        % default - all sites
+arg_default('sitesIn',{'UQAM_1','UQAM_2','UQAM_3'});        % default - all sites
 
 if ischar(sitesIn)
     sitesIn = {sitesIn};
@@ -53,6 +59,9 @@ for currentSiteID = sitesIn
             case 'UQAM_1'
                 netCam_Link = 'http://68.182.132.135:4925/netcam.jpg';
                 take_Phenocam_picture(siteID,netCam_Link,hourIn)     
+            case 'UQAM_2'
+                netCam_Link = 'http://68.182.132.133:4925/netcam.jpg';
+                take_Phenocam_picture(siteID,netCam_Link,hourIn)   
             case 'UQAM_3'
                 netCam_Link = 'http://96.1.34.212:4925/netcam.jpg';
                 take_Phenocam_picture(siteID,netCam_Link,hourIn)                 
@@ -60,7 +69,11 @@ for currentSiteID = sitesIn
         end
     end
     % Run cleaning stage 1 and 2
-    fr_automated_cleaning(yearIn,sitesIn,[1 2]);
+    try
+        fr_automated_cleaning(yearIn,siteID,[1 2]);
+    catch
+        fprintf(2,'fr_automated_cleaning failed when running %s site!\n', siteID);
+    end
 end
 fprintf('\n\n%s\n',datetime);
 fprintf('**** run_UQAM_db_update finished in %6.1f sec.******\n',seconds(datetime-startTime));

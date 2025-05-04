@@ -10,13 +10,42 @@ Metadata:
   long: -72.685
   TimeZoneHour: -5
   northOffset: 285
-
+  
 Processing:
-  ThirdsStage:
-    Storage:
-      Apply_Correction: True
-    ReddyProc:
+  ThirdStage:
+    Fluxes:
+      # Names of flux variables as they come in from second stage
+      # Putting NULL will remove the flux from consideration
+      H: H
+      LE: LE
+      NEE: FC
+      FCH4: FCH4
+    JS_Moving_Z:
       Run: True
-    RF_GapFilling:
+    Papale_Spike_Removal:
       Run: True
+    Storage_Correction: 
+      Run: False
+    REddyProc:
+      Run: TRUE
+      vars_in:
+        NEE: NEE
+        LE: LE
+        H: H
+        FCH4: FCH4
+        Rg: SW_IN_1_1_1
+        Tair: TA_1_1_1
+        VPD: VPD_1_1_1
+        Ustar: USTAR
+        season: season
+      MDSGapFill:
+        basic:
+          - Rg
+          - Tair
+          - VPD
+      Flux_Partitioning:
+        # Turn flux partitioning calculations off to reduce third stage run time for diagnosing errors.
+        # Turn flux partitioning calculations off if GPP and Reco are not wanted.
+        Run: True
+
 

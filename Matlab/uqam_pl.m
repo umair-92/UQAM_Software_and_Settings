@@ -190,9 +190,10 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,'Wind Speed');
 trace_path  = char(fullfile(pthSite,'MET','WS_AVG'),...
+                   fullfile(pthSite,'MET','WS_MAX'),...
                    fullfile(db_pth_root,'yyyy\ECCC\10732\30min','WindSpeed')...
                   );
-trace_legend = char('MET','ECCC');
+trace_legend = char('MET (avg)','MET (max)','ECCC');
 trace_units = '(m/s)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;

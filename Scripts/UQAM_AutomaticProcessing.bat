@@ -24,6 +24,13 @@ start /min winscp.exe  /script=Z:\uqam-site\Scripts\FTP\UQAM_1_SmartFlux_Downloa
 timeout 10 > nul
 
 REM -------------------------------
+REM  UQAM_2
+REM -------------------------------
+@del Z:\uqam-site\Scripts\FTP\log\UQAM_2_SmartFlux_download.log
+start /min winscp.exe  /script=Z:\uqam-site\Scripts\FTP\UQAM_2_SmartFlux_Download.txt  /log="Z:\uqam-site\Scripts\FTP\log\UQAM_2_SmartFlux_download.log"
+timeout 10 > nul
+
+REM -------------------------------
 REM  UQAM_3
 REM -------------------------------
 @del Z:\uqam-site\Scripts\FTP\log\UQAM_3_SmartFlux_download.log
