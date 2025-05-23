@@ -4,11 +4,13 @@ function run_UQAM_db_update(yearIn,sitesIn)
 % This program is based on run_BB_db_update (Micromet- UBC)
 %
 % Zoran Nesic           File created:       May  6, 2024
-%                       Last modification:  Apr 15, 2025
+%                       Last modification:  May  6, 2025
 
 %
 % Revisions:
 %
+% May 6, 2025 (Zoran)
+%   - Added MCGILL_1
 % Apr 15, 2025 (Zoran)
 %   - Added UQAM_2
 %   - added try-catch around fr_automated_cleaning
@@ -64,7 +66,10 @@ for currentSiteID = sitesIn
                 take_Phenocam_picture(siteID,netCam_Link,hourIn)   
             case 'UQAM_3'
                 netCam_Link = 'http://96.1.34.212:4925/netcam.jpg';
-                take_Phenocam_picture(siteID,netCam_Link,hourIn)                 
+                take_Phenocam_picture(siteID,netCam_Link,hourIn)    
+            case 'MCGILL_1'
+                netCam_Link = 'http://173.181.213.63:4925/netcam.jpg';
+                take_Phenocam_picture(siteID,netCam_Link,hourIn)                   
             otherwise
         end
     end

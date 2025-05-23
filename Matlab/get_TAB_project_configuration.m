@@ -135,6 +135,35 @@ structProject.sites.(siteID).dataSources.met.table(tableNum).dbFolderName      =
 %structProject.sites.(siteID).dataSources.eccc(1).stationsID                    = 10732;
 %structProject.sites.(siteID).dataSources.eccc(1).stationsName                  = 'NICOLET';
 
+%===========================
+siteID = 'MCGILL_1';
+structProject.sites.(siteID).siteID = siteID;
+structProject.sites.(siteID).siteIP = "173.181.213.63";
+structProject.sites.(siteID).monitorSitesDataPath       = fullfile(structProject.sitesPath,siteID,'monitorSites\data');
+structProject.sites.(siteID).monitorSitesHHourPath      = fullfile(structProject.sitesPath,siteID,'monitorSites\hhour');
+
+% Data logger tables
+tableNum = 1;
+structProject.sites.(siteID).dataSources.met.table(tableNum).name              = 'Met_30m';
+structProject.sites.(siteID).dataSources.met.table(tableNum).source            = [siteID '_' structProject.sites.(siteID).dataSources.met.table(tableNum).name];
+structProject.sites.(siteID).dataSources.met.table(tableNum).timeStepMin       = 30;
+structProject.sites.(siteID).dataSources.met.table(tableNum).dbFolderName      = 'Met';
+tableNum = tableNum + 1;
+structProject.sites.(siteID).dataSources.met.table(tableNum).name              = 'Met_05m';
+structProject.sites.(siteID).dataSources.met.table(tableNum).source            = [siteID '_' structProject.sites.(siteID).dataSources.met.table(tableNum).name];
+structProject.sites.(siteID).dataSources.met.table(tableNum).timeStepMin       = 5;
+structProject.sites.(siteID).dataSources.met.table(tableNum).dbFolderName      = fullfile('Met',structProject.sites.(siteID).dataSources.met.table(tableNum).name);
+tableNum = tableNum + 1;
+structProject.sites.(siteID).dataSources.met.table(tableNum).name              = 'RawData_05m';
+structProject.sites.(siteID).dataSources.met.table(tableNum).source            = [siteID '_' structProject.sites.(siteID).dataSources.met.table(tableNum).name];
+structProject.sites.(siteID).dataSources.met.table(tableNum).timeStepMin       = 5;
+structProject.sites.(siteID).dataSources.met.table(tableNum).dbFolderName      = fullfile('Met',structProject.sites.(siteID).dataSources.met.table(tableNum).name);
+
+% ECCC stations
+%structProject.sites.(siteID).dataSources.eccc(1).stationsID                    = 10732;
+%structProject.sites.(siteID).dataSources.eccc(1).stationsName                  = 'NICOLET';
+
+
 
 %-------- end yaml ---------------------------
 
