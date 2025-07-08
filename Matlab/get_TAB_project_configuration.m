@@ -104,8 +104,8 @@ structProject.sites.(siteID).dataSources.met.table(tableNum).timeStepMin       =
 structProject.sites.(siteID).dataSources.met.table(tableNum).dbFolderName      = fullfile('Met',structProject.sites.(siteID).dataSources.met.table(tableNum).name);
 
 % ECCC stations
-%structProject.sites.(siteID).dataSources.eccc(1).stationsID                    = 10732;
-%structProject.sites.(siteID).dataSources.eccc(1).stationsName                  = 'NICOLET';
+structProject.sites.(siteID).dataSources.eccc(1).stationsID                    = 27646;
+structProject.sites.(siteID).dataSources.eccc(1).stationsName                  = 'SHAWINIGAN';
 
 %===========================
 siteID = 'UQAM_3';
@@ -132,8 +132,8 @@ structProject.sites.(siteID).dataSources.met.table(tableNum).timeStepMin       =
 structProject.sites.(siteID).dataSources.met.table(tableNum).dbFolderName      = fullfile('Met',structProject.sites.(siteID).dataSources.met.table(tableNum).name);
 
 % ECCC stations
-%structProject.sites.(siteID).dataSources.eccc(1).stationsID                    = 10732;
-%structProject.sites.(siteID).dataSources.eccc(1).stationsName                  = 'NICOLET';
+structProject.sites.(siteID).dataSources.eccc(1).stationsID                    = 27646;
+structProject.sites.(siteID).dataSources.eccc(1).stationsName                  = 'SHAWINIGAN';
 
 %===========================
 siteID = 'MCGILL_1';
@@ -160,8 +160,8 @@ structProject.sites.(siteID).dataSources.met.table(tableNum).timeStepMin       =
 structProject.sites.(siteID).dataSources.met.table(tableNum).dbFolderName      = fullfile('Met',structProject.sites.(siteID).dataSources.met.table(tableNum).name);
 
 % ECCC stations
-%structProject.sites.(siteID).dataSources.eccc(1).stationsID                    = 10732;
-%structProject.sites.(siteID).dataSources.eccc(1).stationsName                  = 'NICOLET';
+structProject.sites.(siteID).dataSources.eccc(1).stationsID                    = 10732;
+structProject.sites.(siteID).dataSources.eccc(1).stationsName                  = 'NICOLET';
 
 
 
