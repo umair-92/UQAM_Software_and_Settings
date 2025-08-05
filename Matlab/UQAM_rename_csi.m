@@ -1,6 +1,8 @@
 function UQAM_rename_csi
 
-arg_default('sitesIn',{'UQAM_1'});        % default - all sites
+structProject = get_TAB_project;
+allSites = fieldnames(structProject.sites)';
+arg_default('sitesIn',allSites);        % default - all sites
 pthSites = biomet_sites_default;
 
 diary(fullfile(pthSites,'UQAM_rename_csi.log'));

@@ -15,8 +15,12 @@ function view_uqam(dateRange,siteIDs,flgPause)
 
 
 arg_default('dateRange',now-10:now)
-arg_default('siteIDs',{'UQAM_1','UQAM_2','UQAM_3'})
+arg_default('siteIDs',{'UQAM_1','UQAM_2','UQAM_3','MCGILL_1'})
 arg_default('flgPause',1)
+
+if ischar(siteIDs)
+ siteIDs = {siteIDs};
+end
 
 % get the year and the index. The index is DOY+1 to match
 % view_sites indexing.
