@@ -1,0 +1,13 @@
+option batch on
+option confirm off
+
+open ANNEX001
+
+# synchronize remote  Z:\UQAM-site\Database /uqam-site/Database
+synchronize remote  Z:\UQAM-site\Matlab /uqam-site/Matlab
+synchronize remote  Z:\UQAM-site\Scripts /uqam-site/Scripts
+synchronize remote  Z:\UQAM-site\Sites /uqam-site/Sites -filemask=" | Common/; HighFrequencyData/; Phenocam/; Photos/"
+
+
+close
+exit

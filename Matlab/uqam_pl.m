@@ -6,12 +6,14 @@ function [t,x] = uqam_pl(ind, yearIn, siteID, select, fig_num_inc,flgPause)
 %   the UBC data-base formated files.
 %
 % (c) c) Nesic Zoran         File created:       Jul 15, 2024      
-%                            Last modification:  Apr 11, 2025
+%                            Last modification:  Jun 23, 2025
 %           
 %
 
 % Revisions:
 %
+% Jul 23, 2025 (Zoran)
+%   - Automatically generate allSites as a default siteIN
 % Apr 11, 2025 (Zoran)
 %   - added UQAM-3
 %   - chaged input variable name "year" to "yearIn"
@@ -20,9 +22,11 @@ function [t,x] = uqam_pl(ind, yearIn, siteID, select, fig_num_inc,flgPause)
 %   - added try/catch/end when setting up xlim for cumulative precip.
 %     Otherwise the program doesn't work well at the beginning of a new yearIn.
 
+structProject = get_TAB_project;
+allSites = fieldnames(structProject.sites)';
+arg_default('siteID',allSites);        % default - all sites
 arg_default('fig_num_inc',1);
 arg_default('select',1);
-arg_default('siteID',{'UQAM_1','UQAM_3'});
 arg_default('flgPause',1);              % default is show one figure and pause
 
 arg_default('yearIn',year(datetime));              % assume current yearIn

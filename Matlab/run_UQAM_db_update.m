@@ -4,11 +4,13 @@ function run_UQAM_db_update(yearIn,sitesIn)
 % This program is based on run_BB_db_update (Micromet- UBC)
 %
 % Zoran Nesic           File created:       May  6, 2024
-%                       Last modification:  May  6, 2025
+%                       Last modification:  Jul 23, 2025
 
 %
 % Revisions:
 %
+% Jul 23, 2025 (Zoran)
+%   - Automatically generate allSites as a default siteIN
 % May 6, 2025 (Zoran)
 %   - Added MCGILL_1
 % Apr 15, 2025 (Zoran)
@@ -34,7 +36,9 @@ function run_UQAM_db_update(yearIn,sitesIn)
 
 startTime = datetime;
 arg_default('yearIn',year(startTime));    % default - current year
-arg_default('sitesIn',{'UQAM_1','UQAM_2','UQAM_3'});        % default - all sites
+structProject = get_TAB_project;
+allSites = fieldnames(structProject.sites)';
+arg_default('sitesIn',allSites);        % default - all sites
 
 if ischar(sitesIn)
     sitesIn = {sitesIn};
