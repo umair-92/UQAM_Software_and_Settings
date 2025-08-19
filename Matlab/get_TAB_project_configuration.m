@@ -12,10 +12,13 @@ function structProject = get_TAB_project_configuration(projectPath)
 %-------- start yaml ---------------------
 projectName = 'UQAM';
 structProject.projectName   = projectName;
+structProject.ismain        = true;     % false if this is a recalc PC, 
+                                        % true if this is the main server
 structProject.path          = fullfile(projectPath);
 structProject.databasePath  = fullfile(structProject.path,'Database');
 structProject.sitesPath     = fullfile(structProject.path,'Sites');
 structProject.matlabPath    = fullfile(structProject.path,'Matlab');
+structProject.hfPath        = structProject.sitesPath; % location of the siteID/HighFrequencyData folder
 
 % %===========================
 % siteID = 'UQAM_0';
@@ -197,6 +200,11 @@ tableNum = tableNum + 1;
 structProject.sites.(siteID).dataSources.met.table(tableNum).name              = 'RawData_05m';
 structProject.sites.(siteID).dataSources.met.table(tableNum).source            = [siteID '_' structProject.sites.(siteID).dataSources.met.table(tableNum).name];
 structProject.sites.(siteID).dataSources.met.table(tableNum).timeStepMin       = 5;
+structProject.sites.(siteID).dataSources.met.table(tableNum).dbFolderName      = fullfile('Met',structProject.sites.(siteID).dataSources.met.table(tableNum).name);
+tableNum = tableNum + 1;
+structProject.sites.(siteID).dataSources.met.table(tableNum).name              = 'SYS';
+structProject.sites.(siteID).dataSources.met.table(tableNum).source            = [siteID '_' structProject.sites.(siteID).dataSources.met.table(tableNum).name];
+structProject.sites.(siteID).dataSources.met.table(tableNum).timeStepMin       = 30;
 structProject.sites.(siteID).dataSources.met.table(tableNum).dbFolderName      = fullfile('Met',structProject.sites.(siteID).dataSources.met.table(tableNum).name);
 
 % ECCC stations

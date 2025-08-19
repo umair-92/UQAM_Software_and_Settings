@@ -23,7 +23,7 @@ function [t,x] = uqam_pl(ind, yearIn, siteID, select, fig_num_inc,flgPause)
 %     Otherwise the program doesn't work well at the beginning of a new yearIn.
 
 structProject = get_TAB_project;
-allSites = fieldnames(structProject.sites)';
+allSites = get_TAB_site_names;
 arg_default('siteID',allSites);        % default - all sites
 arg_default('fig_num_inc',1);
 arg_default('select',1);
@@ -243,9 +243,9 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Battery Voltage');
 trace_path  = char( fullfile(pthSite,'flux','hit_vin_mean'),...
-                    fullfile(pthSite,'flux','vin_sf_mean')...
+                    fullfile(pthSite,'Met\SYS','SYS_PBox_Batt_Volt_Avg')...
                    );
-trace_legend = char('hit-vin-mean','vin_sf_mean');
+trace_legend = char('hit-vin-mean','Main');
 trace_units = '24V Battery Voltage (V)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
@@ -257,12 +257,19 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Battery Current');
 coeffSign = 0;
-trace_path = [];     % this indicates that trace is not available
-fig_num = fig_num-1;
+if strcmp(siteID,'MCGILL_1')
+    trace_path = char( fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Avg'),...
+                       fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Min'),...
+                       fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Max'));
+else
+    trace_path = []; % not plotting
+end
+
 trace_units = '24V Battery Current (Amps)';
+trace_legend = char('Avg','Min','Max');
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
-sysCurrent = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[1 1]*coeffSign ); 
+sysCurrent = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num ); 
 indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 %----------------------------------------------------------
@@ -275,6 +282,13 @@ switch siteID
         Ibb1(isnan(Ibb1))=0;
         trace_path = (1+cumsum(Ibb1/2)/2600)*100;    % Ah / Ah
         trace_legend = [];
+    case 'MCGILL_1'
+        Ibb1 = read_sig( fullfile(pthSite,'Met\SYS', 'SYS_Batt_DCCurrent_Avg'), ind,yearIn, t, 0 );
+        Ibb1(isnan(Ibb1))=0;
+        trace_path = (1+cumsum(Ibb1/2)/2600)*100;    % Ah / Ah
+        trace_legend = [];
+    otherwise
+        trace_path = [];
 end
 trace_units = 'Cummulative Current (%)';
 y_axis      = [];
@@ -289,8 +303,9 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 trace_name  = sprintf('%s: %s',siteID,'Logger Voltage');
 
 trace_path  = char(fullfile(pthSite,'flux','Voltage_12V_Avg'),...
-    fullfile(pthSite,'met','SYS_Logger_Batt_Min'));
-trace_legend = char('Voltage 12V Avg','SYS Logger Batt Min');      
+                   fullfile(pthSite,'flux','vin_sf_mean'),...
+                   fullfile(pthSite,'met','SYS_Logger_Batt_Min'));
+trace_legend = char('Voltage 12V Avg','SmartFlux V','SYS Logger Batt Min');      
 trace_units = 'Instrument Voltage (V)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;

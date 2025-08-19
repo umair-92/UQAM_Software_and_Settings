@@ -4,18 +4,21 @@ function view_uqam(dateRange,siteIDs,flgPause)
 % "view_sites" for UQAM sites
 %
 % Zoran Nesic           File created:       Jul 15, 2024
-%                       Last modification:  Apr 15, 2024
+%                       Last modification:  Aug 19, 2024
 
 % Revisions
 %
+% Aug 19, 2025 (Zoran)
+%   - Properly definded allSites
 % Apr 15, 2025 (Zoran)
 %   - added UQAM_2
 % Apr 11, 2025 (Zoran)
 %  - added UQAM_3
 
-
+structProject = get_TAB_project;
+allSites = get_TAB_site_names;
 arg_default('dateRange',now-10:now)
-arg_default('siteIDs',{'UQAM_1','UQAM_2','UQAM_3','MCGILL_1'})
+arg_default('siteIDs',allSites)
 arg_default('flgPause',1)
 
 if ischar(siteIDs)

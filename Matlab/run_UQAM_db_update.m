@@ -4,11 +4,14 @@ function run_UQAM_db_update(yearIn,sitesIn)
 % This program is based on run_BB_db_update (Micromet- UBC)
 %
 % Zoran Nesic           File created:       May  6, 2024
-%                       Last modification:  Jul 23, 2025
+%                       Last modification:  Aug  6, 2025
 
 %
 % Revisions:
 %
+% Aug 6, 2025 (Zoran)
+%   - generalized cycling through the sites when taking pictures.
+%   - used new function get_TAB_site_names
 % Jul 23, 2025 (Zoran)
 %   - Automatically generate allSites as a default siteIN
 % May 6, 2025 (Zoran)
@@ -37,7 +40,7 @@ function run_UQAM_db_update(yearIn,sitesIn)
 startTime = datetime;
 arg_default('yearIn',year(startTime));    % default - current year
 structProject = get_TAB_project;
-allSites = fieldnames(structProject.sites)';
+allSites = get_TAB_site_names;
 arg_default('sitesIn',allSites);        % default - all sites
 
 if ischar(sitesIn)
@@ -57,25 +60,12 @@ for currentSiteID = sitesIn
     siteID = char(currentSiteID);
     % Take time-lapse photos only once per hour during daytime
     if potential_radiation(now+5/48,45.5,73.7) > 50 && minute(datetime)<30
+        dtStart = datetime;
+        fprintf('  Taking %s Phenocam picture. %s\n',siteID,dtStart);
         hourIn = hour(datetime);
-        switch siteID
-            case 'UQAM_0'
-                netCam_Link = 'http://173.182.84.12:4925/netcam.jpg';
-                take_Phenocam_picture(siteID,netCam_Link,hourIn)
-            case 'UQAM_1'
-                netCam_Link = 'http://68.182.132.135:4925/netcam.jpg';
-                take_Phenocam_picture(siteID,netCam_Link,hourIn)     
-            case 'UQAM_2'
-                netCam_Link = 'http://68.182.132.133:4925/netcam.jpg';
-                take_Phenocam_picture(siteID,netCam_Link,hourIn)   
-            case 'UQAM_3'
-                netCam_Link = 'http://96.1.34.212:4925/netcam.jpg';
-                take_Phenocam_picture(siteID,netCam_Link,hourIn)    
-            case 'MCGILL_1'
-                netCam_Link = 'http://173.181.213.63:4925/netcam.jpg';
-                take_Phenocam_picture(siteID,netCam_Link,hourIn)                   
-            otherwise
-        end
+        netCam_Link = ['http://' char(structProject.sites.(siteID).siteIP) ':4925/netcam.jpg'];
+        take_Phenocam_picture(siteID,netCam_Link,hourIn);  
+        fprintf('Finished. (Duration: %s)\n',datetime-dtStart);
     end
     % Run cleaning stage 1 and 2
     try
