@@ -4,13 +4,16 @@ function db_update_UQAM_site(yearIn,sites)
 %
 %
 % Zorn Nesic            File created:       May  6, 2019        
-%                       Last modification:  Jan  3, 2025
+%                       Last modification:  Aug 19, 2025
 %
 
 % function based on db_update_BB_site
 
 % Revisions:
 %
+% Aug 19, 2025 (Zoran)
+%   - Made it completly generic and driven by the data from
+%     get_TAB_project_configuration.
 % Jan 3, 2025 (Zoran)
 %   - Bug fix: Made sure that the function only processes files with the yearIn in the name.
 %     Before it was processing ".*" (instead of ".YYYY*") so at the beginning of each
@@ -20,25 +23,12 @@ function db_update_UQAM_site(yearIn,sites)
 %   - Improvements to the progress messages so user can see which file name patterns 
         %     were looked for processing.
 
+structProject = get_TAB_project;
+
+allSites = fieldnames(structProject.sites);
+
 arg_default('yearIn',year(datetime));
-arg_default('sites',{'UQAM_0'});
-
-% Logger definition             s (to be moved to yml file)
-cntLogger = 1;
-loggerInfo(cntLogger).tableName         = 'Met_30m';
-loggerInfo(cntLogger).dbFolderName      = 'Met';
-loggerInfo(cntLogger).tableMin          = 30;
-
-cntLogger = cntLogger + 1;
-loggerInfo(cntLogger).tableName         = 'Met_05m';
-loggerInfo(cntLogger).dbFolderName      = fullfile('Met',loggerInfo(cntLogger).tableName);
-loggerInfo(cntLogger).tableMin          = 5;     
-
-cntLogger = cntLogger + 1;
-loggerInfo(cntLogger).tableName         = 'RawData_05m';
-loggerInfo(cntLogger).dbFolderName      = fullfile('Met',loggerInfo(cntLogger).tableName);
-loggerInfo(cntLogger).tableMin          = 5;
-        
+arg_default('sites',allSites);
 
 missingPointValue = NaN;        % Use NaN to indicate missing values
 
@@ -51,16 +41,16 @@ for cntYears=1:length(yearIn)
         siteID = char(sites(cntSites));
         strYear = num2str(yearIn(cntYears));
         pthLog = fullfile(pth_db,'log');
-
+        dtStartTime = datetime;
         fprintf('\n**** Processing Year: %d, Site: %s   *************\n',yearIn(cntYears),siteID);
         
         %----------------------------------------------
         % Cycle through all loggers and logger tables
         %----------------------------------------------
-        for cntTbl = 1:length(loggerInfo)
-            tableMin            = loggerInfo(cntTbl).tableMin;  
-            dbFolderName        = loggerInfo(cntTbl).dbFolderName;
-            tableName           = [siteID '_' loggerInfo(cntTbl).tableName];
+        for cntTbl = 1:length(structProject.sites.(siteID).dataSources.met.table)
+            tableMin            = structProject.sites.(siteID).dataSources.met.table(cntTbl).timeStepMin;   
+            dbFolderName        = structProject.sites.(siteID).dataSources.met.table(cntTbl).dbFolderName;
+            tableName           = structProject.sites.(siteID).dataSources.met.table(cntTbl).source;
             strTimeUnit            = [num2str(tableMin) 'MIN'];
             % progress list name:
             progressListName    = sprintf('%s_progressList_%s.mat',tableName,strYear);
@@ -136,6 +126,7 @@ for cntYears=1:length(yearIn)
         catch
             fprintf(2,'An error happen while running fr_EddyPro_database ( EddyPro _biomet_) in db_update_UQAM_site.m\n');
         end
+        fprintf('Finished. (Duration: %s)\n',datetime-dtStartTime);
     end %j  site counter
     
 end %k   year counter
