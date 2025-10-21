@@ -17,5 +17,9 @@ get -neweronly *_EP-Summary.txt
 # with the local holder "Sites\siteID\Flux\HighFrequencyData\results"
 synchronize local  Z:\UQAM-site\Sites\MCGILL_1\HighFrequencyData\results /home/licor/data/results -filemask="*.zip"
 
+# Synchronize SmartFlux folder "raw" 
+# with the local holder "Sites\siteID\Flux\HighFrequencyData\results"
+synchronize local  Z:\UQAM-site\Sites\MCGILL_1\HighFrequencyData\raw /home/licor/data/raw -filemask="*.ghg"
+
 close
 exit
