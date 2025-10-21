@@ -6,12 +6,14 @@ function [t,x] = uqam_pl(ind, yearIn, siteID, select, fig_num_inc,flgPause)
 %   the UBC data-base formated files.
 %
 % (c) c) Nesic Zoran         File created:       Jul 15, 2024      
-%                            Last modification:  Jun 23, 2025
+%                            Last modification:  Sep  2, 2025
 %           
 %
 
 % Revisions:
 %
+% Sep 2, 2025 (Zoran)
+%   - added Power plotting
 % Jul 23, 2025 (Zoran)
 %   - Automatically generate allSites as a default siteIN
 % Apr 11, 2025 (Zoran)
@@ -249,7 +251,7 @@ trace_legend = char('hit-vin-mean','Main');
 trace_units = '24V Battery Voltage (V)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
-x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
+sysVoltage24 = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 %----------------------------------------------------------
@@ -312,46 +314,41 @@ fig_num = fig_num + fig_num_inc;
 sysVoltage = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
 
-% %----------------------------------------------------------
-% % System Power
-% %----------------------------------------------------------
-% 
-% trace_name  = sprintf('%s: %s',siteID,' System Power');
-% switch siteID
-%     case 'BB1'
-%         if tv(ind(1))<datenum(2021,11,17)
-%             trace_path = sum(-sysVoltage(:,1:2).*sysCurrent(:,1:2),2,'omitnan');
-%         else
-%             trace_path = sum(-sysVoltage(:,1).*sysCurrent(:,1),2,'omitnan');
-%         end
-%     case {'BB2','DSM','RBM'}
-%         trace_path = sum(sysVoltage(:,1).*sysCurrent,2,'omitnan');
-%     case {'HOGG','YOUNG','OHM'}
-%         trace_path = [];
-%         fig_num = fig_num-1;
-% end
-% trace_units = 'System Power (W)';
-% y_axis      = [];
-% fig_num = fig_num + fig_num_inc;
-% sysPower = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
-% indAxes = indAxes+1; allAxes(indAxes) = gca;
-% 
-% %----------------------------------------------------------
-% % System Energy
-% %----------------------------------------------------------
-% trace_name  = sprintf('%s: %s',siteID,' System Energy');
-% switch siteID
-%     case {'HOGG','YOUNG','OHM'}
-%         trace_path = [];
-%         fig_num = fig_num-1;
-%     otherwise
-%         trace_path = cumsum(sysPower/2,'omitnan');
-% end
-% trace_units = 'System Energy (Wh)';
-% y_axis      = [];
-% fig_num = fig_num + fig_num_inc;
-% sysEnergy = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
-% indAxes = indAxes+1; allAxes(indAxes) = gca;
+%----------------------------------------------------------
+% System Power
+%----------------------------------------------------------
+
+trace_name  = sprintf('%s: %s',siteID,' System Power');
+switch siteID
+    case 'MCGILL_1'
+        trace_path = sum(sysVoltage24(:,2).*sysCurrent(:,1),2,'omitnan');
+    otherwise
+        trace_path = [];
+        fig_num = fig_num-1;
+end
+
+trace_units = 'System Power (W)';
+y_axis      = [];
+fig_num = fig_num + fig_num_inc;
+sysPower = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
+indAxes = indAxes+1; allAxes(indAxes) = gca;
+
+%----------------------------------------------------------
+% System Energy
+%----------------------------------------------------------
+trace_name  = sprintf('%s: %s',siteID,' System Energy');
+switch siteID
+    case {'HOGG','YOUNG','OHM'}
+        trace_path = [];
+        fig_num = fig_num-1;
+    otherwise
+        trace_path = cumsum(sysPower/2,'omitnan');
+end
+trace_units = 'System Energy (Wh)';
+y_axis      = [];
+fig_num = fig_num + fig_num_inc;
+sysEnergy = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
+indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 %----------------------------------------------------------
 % System Temperatures
