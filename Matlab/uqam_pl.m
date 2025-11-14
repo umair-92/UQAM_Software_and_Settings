@@ -6,12 +6,14 @@ function [t,x] = uqam_pl(ind, yearIn, siteID, select, fig_num_inc,flgPause)
 %   the UBC data-base formated files.
 %
 % (c) c) Nesic Zoran         File created:       Jul 15, 2024      
-%                            Last modification:  Sep  2, 2025
+%                            Last modification:  Nov 14, 2025
 %           
 %
 
 % Revisions:
 %
+% Nov 14, 2025 (Zoran)
+%   - Improved power plotting
 % Sep 2, 2025 (Zoran)
 %   - added Power plotting
 % Jul 23, 2025 (Zoran)
@@ -245,9 +247,10 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Battery Voltage');
 trace_path  = char( fullfile(pthSite,'flux','hit_vin_mean'),...
+                    fullfile(pthSite,'met','Voltage_24V_avg'),...
                     fullfile(pthSite,'Met\SYS','SYS_PBox_Batt_Volt_Avg')...
                    );
-trace_legend = char('hit-vin-mean','Main');
+trace_legend = char('hit-vin-mean','Main','SYS_{PBox}');
 trace_units = '24V Battery Voltage (V)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
@@ -260,15 +263,18 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 trace_name  = sprintf('%s: %s',siteID,' Battery Current');
 coeffSign = 0;
 if strcmp(siteID,'MCGILL_1')
-    trace_path = char( fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Avg'),...
+    trace_path = char( fullfile(pthSite,'Met','PowerBox_Current_Avg'),...
                        fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Min'),...
-                       fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Max'));
+                       fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Max'),...
+                       fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Avg'));
+    trace_legend = char('Tower','Batt_{Avg}','Batt_{Min}','Batt_{Max}');
 else
-    trace_path = []; % not plotting
+    trace_path = char(fullfile(pthSite,'Met','PowerBox_Current_Avg'));
+    trace_legend = [];
 end
 
 trace_units = '24V Battery Current (Amps)';
-trace_legend = char('Avg','Min','Max');
+
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 sysCurrent = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num ); 
@@ -290,7 +296,10 @@ switch siteID
         trace_path = (1+cumsum(Ibb1/2)/2600)*100;    % Ah / Ah
         trace_legend = [];
     otherwise
-        trace_path = [];
+        Ibb1 = read_sig( fullfile(pthSite,'Met', 'PowerBox_Current_Avg'), ind,yearIn, t, 0 );
+        Ibb1(isnan(Ibb1))=0;
+        trace_path = (1+cumsum(Ibb1/2)/2600)*100;    % Ah / Ah
+        trace_legend = [];
 end
 trace_units = 'Cummulative Current (%)';
 y_axis      = [];
@@ -321,10 +330,14 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 trace_name  = sprintf('%s: %s',siteID,' System Power');
 switch siteID
     case 'MCGILL_1'
-        trace_path = sum(sysVoltage24(:,2).*sysCurrent(:,1),2,'omitnan');
+        trace_path = [sum(sysVoltage24(:,3).*sysCurrent(:,4),2,'omitnan') ...
+                      sum(sysVoltage24(:,2).*sysCurrent(:,1),2,'omitnan')];
+        trace_legend = char('Total Power','Tower Power'); 
     otherwise
-        trace_path = [];
-        fig_num = fig_num-1;
+        % trace_path = [];
+        % fig_num = fig_num-1;
+        trace_path = [sum(sysVoltage24(:,2).*sysCurrent(:,1),2,'omitnan')];
+        trace_legend = [];
 end
 
 trace_units = 'System Power (W)';
@@ -342,7 +355,7 @@ switch siteID
         trace_path = [];
         fig_num = fig_num-1;
     otherwise
-        trace_path = cumsum(sysPower/2,'omitnan');
+        trace_path = cumsum(sysPower(:,1)/2,'omitnan');
 end
 trace_units = 'System Energy (Wh)';
 y_axis      = [];
