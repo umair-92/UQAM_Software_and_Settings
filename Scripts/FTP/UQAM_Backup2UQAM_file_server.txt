@@ -1,0 +1,14 @@
+option batch on
+option confirm off
+
+open UQAM_file_server
+ls /home/mcgill/Database
+
+synchronize remote  Z:\UQAM-site\Database /Data/mcgill/Database
+synchronize remote  Z:\UQAM-site\Matlab   /Data/mcgill/Matlab
+synchronize remote  Z:\UQAM-site\Scripts  /Data/mcgill/Scripts
+synchronize remote  Z:\UQAM-site\Sites    /Data/mcgill/Sites 
+
+
+close
+exit
