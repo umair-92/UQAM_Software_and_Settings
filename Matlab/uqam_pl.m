@@ -6,12 +6,14 @@ function [t,x] = uqam_pl(ind, yearIn, siteID, select, fig_num_inc,flgPause)
 %   the UBC data-base formated files.
 %
 % (c) c) Nesic Zoran         File created:       Jul 15, 2024      
-%                            Last modification:  Nov 14, 2025
+%                            Last modification:  Nov 29, 2025
 %           
 %
 
 % Revisions:
 %
+% Nov 29, 2025 (Zoran)
+%   - Added battery temperatures for MCGILL_1
 % Nov 14, 2025 (Zoran)
 %   - Improved power plotting
 % Sep 2, 2025 (Zoran)
@@ -213,11 +215,12 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,'Wind Direction');
 trace_path  = char(fullfile(pthSite,'MET','WD'),...
+                   fullfile(pthSite,'flux','wind_dir'),...
                    fullfile(db_pth_root,'yyyy\ECCC\10732\30min','WindDir')...
                    );
-trace_legend = char('MET','ECCC');
+trace_legend = char('MET','Sonic','ECCC');
 trace_units = 'deg';
-unitCorrection = [1 10];
+unitCorrection = [1 1 10];
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,unitCorrection );
@@ -367,9 +370,20 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 % System Temperatures
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' System Temperatures');
-trace_path  = char(fullfile(pthSite,'MET','SYS_Logger_Temp_Avg')...  
-           );
-trace_legend = char('CR1000x');
+switch siteID
+    case {'MCGILL_1'}
+        trace_path  = char(fullfile(pthSite,'MET','SYS_Logger_Temp_Avg'),...
+                           fullfile(pthSite,'MET\SYS','SYS_BatteryBoxTC_Avg'),...
+                           fullfile(pthSite,'MET\SYS','SYS_chargerTC_Avg'),...
+                           fullfile(pthSite,'MET\SYS','SYS_PanelT_CR1000_Avg')...
+                   );
+        trace_legend = char('CR1000x','Battery','Charger','Battery Logger');
+    otherwise
+        trace_path  = char(fullfile(pthSite,'MET','SYS_Logger_Temp_Avg')...  
+                   );
+        trace_legend = char('CR1000x');
+end
+
 trace_units = 'Temperature (\circC)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
