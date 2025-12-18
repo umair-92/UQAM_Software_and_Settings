@@ -6,12 +6,14 @@ function [t,x] = uqam_pl(ind, yearIn, siteID, select, fig_num_inc,flgPause)
 %   the UBC data-base formated files.
 %
 % (c) c) Nesic Zoran         File created:       Jul 15, 2024      
-%                            Last modification:  Nov 29, 2025
+%                            Last modification:  Dec 18, 2025
 %           
 %
 
 % Revisions:
 %
+% Dec 18, 2025 (Zoran)
+%   - Added wind direction comparison Sonic vs RMYOUNG
 % Nov 29, 2025 (Zoran)
 %   - Added battery temperatures for MCGILL_1
 % Nov 14, 2025 (Zoran)
