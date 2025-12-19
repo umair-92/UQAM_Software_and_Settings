@@ -14,6 +14,8 @@ function [t,x] = uqam_pl(ind, yearIn, siteID, select, fig_num_inc,flgPause)
 %
 % Dec 18, 2025 (Zoran)
 %   - Added wind direction comparison Sonic vs RMYOUNG
+%   - Added plotting of spin and pump motors as well as the heaters for LI-7700
+%   - added shading of "out of range" measurements (see shadeBadZone())
 % Nov 29, 2025 (Zoran)
 %   - Added battery temperatures for MCGILL_1
 % Nov 14, 2025 (Zoran)
@@ -584,6 +586,50 @@ x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_
 indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 %----------------------------------------------------------
+% LI700 Washer pump
+%----------------------------------------------------------
+trace_name  = sprintf('%s: %s',siteID,' LI-7700 Washer pump');
+trace_path  = char(fullfile(pthSite,'Flux','pump_on_LI_7700'));
+trace_legend = [];
+trace_units = 'Washer Pump ON (Samples)';
+y_axis      = [];
+fig_num = fig_num + fig_num_inc;
+x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[],[],char('o') );
+% Add a shaded area where the trace should not exist (above 500)
+shadeBadZone(500)
+indAxes = indAxes+1; allAxes(indAxes) = gca;
+
+%----------------------------------------------------------
+% LI7700 spin motor
+%----------------------------------------------------------
+trace_name  = sprintf('%s: %s',siteID,' LI7700 spin motor');
+trace_path  = char(fullfile(pthSite,'Flux','motor_spinning_LI_7700'));
+trace_legend = [];
+trace_units = 'Spin Motor ON (Samples)';
+y_axis      = [];
+fig_num = fig_num + fig_num_inc;
+x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[],[],char('o') );
+% Add a shaded area where the trace should not exist (above 500)
+shadeBadZone(700)
+indAxes = indAxes+1; allAxes(indAxes) = gca;
+
+%----------------------------------------------------------
+% LI7700 heaters
+%----------------------------------------------------------
+trace_name  = sprintf('%s: %s',siteID,' LI7700 Heaters');
+trace_path  = char(fullfile(pthSite,'Flux','top_heater_on_LI_7700'),...
+                  fullfile(pthSite,'Flux','bottom_heater_on_LI_7700')...
+                  );
+trace_legend = char('Top','Bottom');
+trace_units = 'Heaters ON (Samples)';
+y_axis      = [];
+fig_num = fig_num + fig_num_inc;
+x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[],[],char('o','d') );
+% Add a shaded area where the trace should not exist (above 500)
+shadeBadZone(37000)
+indAxes = indAxes+1; allAxes(indAxes) = gca;
+
+%----------------------------------------------------------
 % Delay times
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Delay Times');
@@ -686,4 +732,13 @@ end
 
 end
 
-
+function shadeBadZone(maxY)
+    xl=xlim;
+    yl=ylim;    
+    if yl(2)> maxY
+        patch([xl(1) xl(2) xl(2) xl(1)],[ maxY maxY yl(2) yl(2) ],...
+              'r','facealpha',0.1,'edgecolor','none',...
+              'HandleVisibility', 'off')
+        yline(maxY,'r--','Max','HandleVisibility', 'off')
+    end
+end
