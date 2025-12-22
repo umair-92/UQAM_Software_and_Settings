@@ -184,6 +184,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([-150 800])
 
 %----------------------------------------------------------
 % PPFD
@@ -247,7 +248,7 @@ if ~isempty(indNans)
         'DisplayName','Missing')
 end
 indAxes = indAxes+1; allAxes(indAxes) = gca;
-
+shadeBadZone([35000 Inf])
 
 %----------------------------------------------------------
 % 24V Battery Voltage
@@ -263,6 +264,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 sysVoltage24 = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([23.5 30.3])
 
 %----------------------------------------------------------
 % Battery Current
@@ -286,6 +288,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 sysCurrent = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num ); 
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([-5 Inf])
 
 %----------------------------------------------------------
 % Cumulative Battery Current
@@ -352,6 +355,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 sysPower = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([-100 Inf])
 
 %----------------------------------------------------------
 % System Energy
@@ -393,6 +397,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([-20 45])
 
 %----------------------------------------------------------
 % LI-7200 Thermocouples
@@ -428,6 +433,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[1 1000*60] );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([12 Inf])
 
 %----------------------------------------------------------
 % Flow Drive
@@ -449,6 +455,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([30 98])
 
 %----------------------------------------------------------
 % Head Pressure
@@ -470,6 +477,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([-3.6 -0.8])
 
 %----------------------------------------------------------
 % Air pressure
@@ -501,7 +509,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
-
+shadeBadZone([-Inf 4000])
 
 %----------------------------------------------------------
 % Diagnostics
@@ -584,6 +592,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([15 Inf])
 
 %----------------------------------------------------------
 % LI700 Washer pump
@@ -596,7 +605,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[],[],char('o') );
 % Add a shaded area where the trace should not exist (above 500)
-shadeBadZone(500)
+shadeBadZone([-Inf 500])
 indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 %----------------------------------------------------------
@@ -610,7 +619,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[],[],char('o') );
 % Add a shaded area where the trace should not exist (above 500)
-shadeBadZone(700)
+shadeBadZone([-Inf 700])
 indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 %----------------------------------------------------------
@@ -626,7 +635,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[],[],char('o','d') );
 % Add a shaded area where the trace should not exist (above 500)
-shadeBadZone(37000)
+shadeBadZone([-Inf 37000])
 indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 %----------------------------------------------------------
@@ -732,13 +741,4 @@ end
 
 end
 
-function shadeBadZone(maxY)
-    xl=xlim;
-    yl=ylim;    
-    if yl(2)> maxY
-        patch([xl(1) xl(2) xl(2) xl(1)],[ maxY maxY yl(2) yl(2) ],...
-              'r','facealpha',0.1,'edgecolor','none',...
-              'HandleVisibility', 'off')
-        yline(maxY,'r--','Max','HandleVisibility', 'off')
-    end
-end
+
