@@ -276,7 +276,7 @@ if strcmp(siteID,'MCGILL_1')
                        fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Min'),...
                        fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Max'),...
                        fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Avg'));
-    trace_legend = char('Tower','Batt_{Avg}','Batt_{Min}','Batt_{Max}');
+    trace_legend = char('Tower','Batt_{Min}','Batt_{Max}','Batt_{Avg}');
 else
     trace_path = char(fullfile(pthSite,'Met','PowerBox_Current_Avg'));
     trace_legend = [];
