@@ -6,12 +6,15 @@ function [t,x] = uqam_pl(ind, yearIn, siteID, select, fig_num_inc,flgPause)
 %   the UBC data-base formated files.
 %
 % (c) c) Nesic Zoran         File created:       Jul 15, 2024      
-%                            Last modification:  Dec 18, 2025
+%                            Last modification:  Jan 15, 2026
 %           
 %
 
 % Revisions:
 %
+% Jan 16, 2026 (Zoran)
+%   - made ECCC plotting site-specific. (there was a bug - it plotted
+%     always the same station)
 % Dec 18, 2025 (Zoran)
 %   - Added wind direction comparison Sonic vs RMYOUNG
 %   - Added plotting of spin and pump motors as well as the heaters for LI-7700
@@ -72,10 +75,10 @@ indAxes = 0;
 % HMP air temperatures
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Air Temperature');
-
+pathECCC = sprintf('yyyy\\ECCC\\%d\\30min',structProject.sites.(siteID).dataSources.eccc(1).stationsID);
 trace_path  = char(fullfile(pthSite,'MET','TA_1_1_1_AVG'),...
                    fullfile(pthSite,'MET','TA_1_2_1_AVG'),...
-                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','Tair'),...
+                   fullfile(db_pth_root,pathECCC,'Tair'),...
                    fullfile(pthSite,'Flux','air_temperature')...                   
                    );
 tempOffset = [0 0 0 273.15];   %273.15 273.15];
@@ -93,7 +96,7 @@ trace_name  = sprintf('%s: %s',siteID,' Relative Humidity');
 
 trace_path  = char(fullfile(pthSite,'MET','RH_1_1_1_AVG'),...
                    fullfile(pthSite,'MET','RH_1_2_1_AVG'),...
-                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','RH')...
+                   fullfile(db_pth_root,pathECCC,'RH')...
                    );
 trace_legend = char('RH_{HMP-1}','RH_{HMP-2}','ECCC 10732');
 trace_units = 'RH (%)';
@@ -109,7 +112,7 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 trace_name  = sprintf('%s: %s',siteID,'Precipitation');
 
 trace_path  = char(fullfile(pthSite,'MET','P_1_1_1_tot'),...
-                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','Precip')...
+                   fullfile(db_pth_root,pathECCC,'Precip')...
                    );
 trace_legend = char('TB-Site','TB-ECCC');
 
@@ -139,7 +142,7 @@ trace_path  = char(fullfile(pthSite,'MET','P_1_1_1_tot'));
 [x1,tx_new] = read_sig(trace_path(1,:), indNew,yearIn, tx,0); %#ok<*ASGLU>
 x1(isnan(x1)) = 0; % replace NaNs with 0 so that cumsum can work
 
-trace_path  = char(fullfile(db_pth_root,'yyyy\ECCC\10732\30min','Precip'));
+trace_path  = char(fullfile(db_pth_root,pathECCC,'Precip'));
 [x2,tx_new] = read_sig(trace_path(1,:), indNew,yearIn, tx,0); %#ok<*ASGLU>
 x2(isnan(x2)) = 0; % replace NaNs with 0 so that cumsum can work
 
@@ -206,7 +209,7 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 trace_name  = sprintf('%s: %s',siteID,'Wind Speed');
 trace_path  = char(fullfile(pthSite,'MET','WS_AVG'),...
                    fullfile(pthSite,'MET','WS_MAX'),...
-                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','WindSpeed')...
+                   fullfile(db_pth_root,pathECCC,'WindSpeed')...
                   );
 trace_legend = char('MET (avg)','MET (max)','ECCC');
 trace_units = '(m/s)';
@@ -221,7 +224,7 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 trace_name  = sprintf('%s: %s',siteID,'Wind Direction');
 trace_path  = char(fullfile(pthSite,'MET','WD'),...
                    fullfile(pthSite,'flux','wind_dir'),...
-                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','WindDir')...
+                   fullfile(db_pth_root,pathECCC,'WindDir')...
                    );
 trace_legend = char('MET','Sonic','ECCC');
 trace_units = 'deg';
