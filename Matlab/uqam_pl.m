@@ -15,6 +15,7 @@ function [t,x] = uqam_pl(ind, yearIn, siteID, select, fig_num_inc,flgPause)
 % Jan 16, 2026 (Zoran)
 %   - made ECCC plotting site-specific. (there was a bug - it plotted
 %     always the same station)
+%   - added special cases for UQAM_4b logger
 % Dec 18, 2025 (Zoran)
 %   - Added wind direction comparison Sonic vs RMYOUNG
 %   - Added plotting of spin and pump motors as well as the heaters for LI-7700
@@ -161,12 +162,20 @@ end
 % CNR4 components
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' CNR4 components');
-
-trace_path  = char(fullfile(pthSite,'MET','SW_IN_AVG'),...
-                   fullfile(pthSite,'MET','SW_OUT_AVG'),...
-                   fullfile(pthSite,'MET','LW_IN_AVG'),...
-                   fullfile(pthSite,'MET','LW_OUT_AVG')...
-                   );
+switch siteID
+    case 'UQAM_4'
+        trace_path  = char(fullfile(pthSite,'MET/B','SYS_SW_IN_AVG'),...
+                           fullfile(pthSite,'MET/B','SYS_SW_OUT_AVG'),...
+                           fullfile(pthSite,'MET/B','SYS_LW_IN_AVG'),...
+                           fullfile(pthSite,'MET/B','SYS_LW_OUT_AVG')...
+                           );
+    otherwise
+        trace_path  = char(fullfile(pthSite,'MET','SW_IN_AVG'),...
+                           fullfile(pthSite,'MET','SW_OUT_AVG'),...
+                           fullfile(pthSite,'MET','LW_IN_AVG'),...
+                           fullfile(pthSite,'MET','LW_OUT_AVG')...
+                           );
+end
 trace_legend = char('SW_{IN}','SW_{OUT}','LW_{IN}','LW_{OUT}');
 trace_units = '(W)';
 y_axis      = [];
@@ -178,9 +187,14 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 % NET radiation
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' NETRAD');
-
-trace_path  = char(fullfile(pthSite,'MET','NETRAD_AVG')...
+switch siteID
+    case 'UQAM_4'
+        trace_path  = char(fullfile(pthSite,'MET/B','SYS_NETRAD_AVG')...
                    );
+    otherwise
+        trace_path  = char(fullfile(pthSite,'MET','NETRAD_AVG')...
+                           );
+end
 trace_legend = [];
 trace_units = '(µmol/m2/s)';
 y_axis      = [];
@@ -193,9 +207,16 @@ shadeBadZone([-150 800])
 % PPFD
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' PPFD');
-trace_path  = char(fullfile(pthSite,'MET','PPFD_IN_AVG'),...
-                   fullfile(pthSite,'MET','PPFD_OUT_AVG')...
-    );
+switch siteID
+    case 'UQAM_4'
+         trace_path  = char(fullfile(pthSite,'MET/B','SYS_PPFD_IN_AVG'),...
+                            fullfile(pthSite,'MET/B','SYS_PPFD_OUT_AVG')...
+                            );
+    otherwise
+        trace_path  = char(fullfile(pthSite,'MET','PPFD_IN_AVG'),...
+                           fullfile(pthSite,'MET','PPFD_OUT_AVG')...
+                            );
+end
 trace_legend = char('PPFD_{IN}','PPFD_{OUT}');
 trace_units = '(µmol/m2/s)';
 y_axis      = [];
@@ -257,17 +278,27 @@ shadeBadZone([35000 Inf])
 % 24V Battery Voltage
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Battery Voltage');
-trace_path  = char( fullfile(pthSite,'flux','hit_vin_mean'),...
-                    fullfile(pthSite,'met','Voltage_24V_avg'),...
-                    fullfile(pthSite,'Met\SYS','SYS_PBox_Batt_Volt_Avg')...
-                   );
-trace_legend = char('hit-vin-mean','Main','SYS_{PBox}');
+switch siteID
+    case 'UQAM_4'
+        trace_path  = char( fullfile(pthSite,'flux','hit_vin_mean'),...
+                            fullfile(pthSite,'met','Voltage_24V_avg'),...
+                            fullfile(pthSite,'Met\B','SYS_Logger_Batt_Min')...
+                           );
+        trace_legend = char('hit-vin-mean','Main','Logger B');
+    otherwise
+        trace_path  = char( fullfile(pthSite,'flux','hit_vin_mean'),...
+                            fullfile(pthSite,'met','Voltage_24V_avg'),...
+                            fullfile(pthSite,'Met\SYS','SYS_PBox_Batt_Volt_Avg')...
+                           );
+        trace_legend = char('hit-vin-mean','Main','SYS_{PBox}');
+end
+
 trace_units = '24V Battery Voltage (V)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 sysVoltage24 = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
-shadeBadZone([23.5 30.3])
+shadeBadZone([23 30.3])
 
 %----------------------------------------------------------
 % Battery Current
@@ -298,11 +329,6 @@ shadeBadZone([-5 Inf])
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Cumulative Battery Current');
 switch siteID
-    case {'BB2','DSM','RBM'}
-        Ibb1 = read_sig( fullfile(pthSite,'MET', 'SYS_Batt_DCCurrent_Avg'), ind,yearIn, t, 0 );
-        Ibb1(isnan(Ibb1))=0;
-        trace_path = (1+cumsum(Ibb1/2)/2600)*100;    % Ah / Ah
-        trace_legend = [];
     case 'MCGILL_1'
         Ibb1 = read_sig( fullfile(pthSite,'Met\SYS', 'SYS_Batt_DCCurrent_Avg'), ind,yearIn, t, 0 );
         Ibb1(isnan(Ibb1))=0;
@@ -325,16 +351,24 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 % System Voltage
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,'Logger Voltage');
-
-trace_path  = char(fullfile(pthSite,'flux','Voltage_12V_Avg'),...
-                   fullfile(pthSite,'flux','vin_sf_mean'),...
-                   fullfile(pthSite,'met','SYS_Logger_Batt_Min'));
-trace_legend = char('Voltage 12V Avg','SmartFlux V','SYS Logger Batt Min');      
+switch siteID
+    case 'UQAM_4'
+        trace_path  = char(fullfile(pthSite,'flux','Voltage_12V_Avg'),...
+                           fullfile(pthSite,'met','SYS_Logger_Batt_Min'),...
+                           fullfile(pthSite,'met\B','SYS_BattV_Avg'));
+        trace_legend = char('Voltage 12V Avg','Logger - A', 'Logger - B');
+    otherwise
+        trace_path  = char(fullfile(pthSite,'flux','Voltage_12V_Avg'),...
+                           fullfile(pthSite,'met','SYS_Logger_Batt_Min'));
+        trace_legend = char('Voltage 12V Avg','SmartFlux V','SYS Logger Batt Min');
+end
+      
 trace_units = 'Instrument Voltage (V)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 sysVoltage = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([11.8 15.1])
 
 %----------------------------------------------------------
 % System Power
@@ -389,6 +423,11 @@ switch siteID
                            fullfile(pthSite,'MET\SYS','SYS_PanelT_CR1000_Avg')...
                    );
         trace_legend = char('CR1000x','Battery','Charger','Battery Logger');
+    case {'UQAM_4'}
+        trace_path  = char(fullfile(pthSite,'MET','SYS_Logger_Temp_Avg'),...
+                           fullfile(pthSite,'MET\B','SYS_PTemp_C_Avg')...
+                   );
+        trace_legend = char('CR1000x','Battery','Charger','Battery Logger');    
     otherwise
         trace_path  = char(fullfile(pthSite,'MET','SYS_Logger_Temp_Avg')...  
                    );
@@ -660,12 +699,20 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 % Soil moisture
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Soil Moisture');
-
-trace_path  = char( fullfile(pthSite,'met','a_CS650_1_1_1_Avg'),...
-                    fullfile(pthSite,'met','a_CS650_1_2_1_Avg'),...
-                    fullfile(pthSite,'met','a_CS650_1_3_1_Avg'),...
-                    fullfile(pthSite,'met','a_CS650_1_4_1_Avg')...
-                   );
+switch siteID
+    case 'UQAM_4'
+        trace_path  = char( fullfile(pthSite,'met/B','a_CS650_1_1_1_Avg'),...
+                            fullfile(pthSite,'met/B','a_CS650_1_2_1_Avg'),...
+                            fullfile(pthSite,'met/B','a_CS650_1_3_1_Avg'),...
+                            fullfile(pthSite,'met/B','a_CS650_1_4_1_Avg')...
+                            );
+    otherwise
+        trace_path  = char( fullfile(pthSite,'met','a_CS650_1_1_1_Avg'),...
+                            fullfile(pthSite,'met','a_CS650_1_2_1_Avg'),...
+                            fullfile(pthSite,'met','a_CS650_1_3_1_Avg'),...
+                            fullfile(pthSite,'met','a_CS650_1_4_1_Avg')...
+                            );
+end
 
 trace_legend = char('1','2','3','4');
 trace_units = '(%)'; 
