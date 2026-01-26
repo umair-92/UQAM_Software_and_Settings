@@ -6,12 +6,22 @@ function [t,x] = uqam_pl(ind, yearIn, siteID, select, fig_num_inc,flgPause)
 %   the UBC data-base formated files.
 %
 % (c) c) Nesic Zoran         File created:       Jul 15, 2024      
-%                            Last modification:  Nov 14, 2025
+%                            Last modification:  Jan 15, 2026
 %           
 %
 
 % Revisions:
 %
+% Jan 16, 2026 (Zoran)
+%   - made ECCC plotting site-specific. (there was a bug - it plotted
+%     always the same station)
+%   - added special cases for UQAM_4b logger
+% Dec 18, 2025 (Zoran)
+%   - Added wind direction comparison Sonic vs RMYOUNG
+%   - Added plotting of spin and pump motors as well as the heaters for LI-7700
+%   - added shading of "out of range" measurements (see shadeBadZone())
+% Nov 29, 2025 (Zoran)
+%   - Added battery temperatures for MCGILL_1
 % Nov 14, 2025 (Zoran)
 %   - Improved power plotting
 % Sep 2, 2025 (Zoran)
@@ -66,10 +76,10 @@ indAxes = 0;
 % HMP air temperatures
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Air Temperature');
-
+pathECCC = sprintf('yyyy\\ECCC\\%d\\30min',structProject.sites.(siteID).dataSources.eccc(1).stationsID);
 trace_path  = char(fullfile(pthSite,'MET','TA_1_1_1_AVG'),...
                    fullfile(pthSite,'MET','TA_1_2_1_AVG'),...
-                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','Tair'),...
+                   fullfile(db_pth_root,pathECCC,'Tair'),...
                    fullfile(pthSite,'Flux','air_temperature')...                   
                    );
 tempOffset = [0 0 0 273.15];   %273.15 273.15];
@@ -87,7 +97,7 @@ trace_name  = sprintf('%s: %s',siteID,' Relative Humidity');
 
 trace_path  = char(fullfile(pthSite,'MET','RH_1_1_1_AVG'),...
                    fullfile(pthSite,'MET','RH_1_2_1_AVG'),...
-                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','RH')...
+                   fullfile(db_pth_root,pathECCC,'RH')...
                    );
 trace_legend = char('RH_{HMP-1}','RH_{HMP-2}','ECCC 10732');
 trace_units = 'RH (%)';
@@ -103,7 +113,7 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 trace_name  = sprintf('%s: %s',siteID,'Precipitation');
 
 trace_path  = char(fullfile(pthSite,'MET','P_1_1_1_tot'),...
-                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','Precip')...
+                   fullfile(db_pth_root,pathECCC,'Precip')...
                    );
 trace_legend = char('TB-Site','TB-ECCC');
 
@@ -133,7 +143,7 @@ trace_path  = char(fullfile(pthSite,'MET','P_1_1_1_tot'));
 [x1,tx_new] = read_sig(trace_path(1,:), indNew,yearIn, tx,0); %#ok<*ASGLU>
 x1(isnan(x1)) = 0; % replace NaNs with 0 so that cumsum can work
 
-trace_path  = char(fullfile(db_pth_root,'yyyy\ECCC\10732\30min','Precip'));
+trace_path  = char(fullfile(db_pth_root,pathECCC,'Precip'));
 [x2,tx_new] = read_sig(trace_path(1,:), indNew,yearIn, tx,0); %#ok<*ASGLU>
 x2(isnan(x2)) = 0; % replace NaNs with 0 so that cumsum can work
 
@@ -152,12 +162,20 @@ end
 % CNR4 components
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' CNR4 components');
-
-trace_path  = char(fullfile(pthSite,'MET','SW_IN_AVG'),...
-                   fullfile(pthSite,'MET','SW_OUT_AVG'),...
-                   fullfile(pthSite,'MET','LW_IN_AVG'),...
-                   fullfile(pthSite,'MET','LW_OUT_AVG')...
-                   );
+switch siteID
+    case 'UQAM_4'
+        trace_path  = char(fullfile(pthSite,'MET/B','SYS_SW_IN_AVG'),...
+                           fullfile(pthSite,'MET/B','SYS_SW_OUT_AVG'),...
+                           fullfile(pthSite,'MET/B','SYS_LW_IN_AVG'),...
+                           fullfile(pthSite,'MET/B','SYS_LW_OUT_AVG')...
+                           );
+    otherwise
+        trace_path  = char(fullfile(pthSite,'MET','SW_IN_AVG'),...
+                           fullfile(pthSite,'MET','SW_OUT_AVG'),...
+                           fullfile(pthSite,'MET','LW_IN_AVG'),...
+                           fullfile(pthSite,'MET','LW_OUT_AVG')...
+                           );
+end
 trace_legend = char('SW_{IN}','SW_{OUT}','LW_{IN}','LW_{OUT}');
 trace_units = '(W)';
 y_axis      = [];
@@ -169,23 +187,36 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 % NET radiation
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' NETRAD');
-
-trace_path  = char(fullfile(pthSite,'MET','NETRAD_AVG')...
+switch siteID
+    case 'UQAM_4'
+        trace_path  = char(fullfile(pthSite,'MET/B','SYS_NETRAD_AVG')...
                    );
+    otherwise
+        trace_path  = char(fullfile(pthSite,'MET','NETRAD_AVG')...
+                           );
+end
 trace_legend = [];
 trace_units = '(µmol/m2/s)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([-150 800])
 
 %----------------------------------------------------------
 % PPFD
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' PPFD');
-trace_path  = char(fullfile(pthSite,'MET','PPFD_IN_AVG'),...
-                   fullfile(pthSite,'MET','PPFD_OUT_AVG')...
-    );
+switch siteID
+    case 'UQAM_4'
+         trace_path  = char(fullfile(pthSite,'MET/B','SYS_PPFD_IN_AVG'),...
+                            fullfile(pthSite,'MET/B','SYS_PPFD_OUT_AVG')...
+                            );
+    otherwise
+        trace_path  = char(fullfile(pthSite,'MET','PPFD_IN_AVG'),...
+                           fullfile(pthSite,'MET','PPFD_OUT_AVG')...
+                            );
+end
 trace_legend = char('PPFD_{IN}','PPFD_{OUT}');
 trace_units = '(µmol/m2/s)';
 y_axis      = [];
@@ -199,7 +230,7 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 trace_name  = sprintf('%s: %s',siteID,'Wind Speed');
 trace_path  = char(fullfile(pthSite,'MET','WS_AVG'),...
                    fullfile(pthSite,'MET','WS_MAX'),...
-                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','WindSpeed')...
+                   fullfile(db_pth_root,pathECCC,'WindSpeed')...
                   );
 trace_legend = char('MET (avg)','MET (max)','ECCC');
 trace_units = '(m/s)';
@@ -213,11 +244,12 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,'Wind Direction');
 trace_path  = char(fullfile(pthSite,'MET','WD'),...
-                   fullfile(db_pth_root,'yyyy\ECCC\10732\30min','WindDir')...
+                   fullfile(pthSite,'flux','wind_dir'),...
+                   fullfile(db_pth_root,pathECCC,'WindDir')...
                    );
-trace_legend = char('MET','ECCC');
+trace_legend = char('MET','Sonic','ECCC');
 trace_units = 'deg';
-unitCorrection = [1 10];
+unitCorrection = [1 1 10];
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,unitCorrection );
@@ -240,22 +272,33 @@ if ~isempty(indNans)
         'DisplayName','Missing')
 end
 indAxes = indAxes+1; allAxes(indAxes) = gca;
-
+shadeBadZone([35000 Inf])
 
 %----------------------------------------------------------
 % 24V Battery Voltage
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Battery Voltage');
-trace_path  = char( fullfile(pthSite,'flux','hit_vin_mean'),...
-                    fullfile(pthSite,'met','Voltage_24V_avg'),...
-                    fullfile(pthSite,'Met\SYS','SYS_PBox_Batt_Volt_Avg')...
-                   );
-trace_legend = char('hit-vin-mean','Main','SYS_{PBox}');
+switch siteID
+    case 'UQAM_4'
+        trace_path  = char( fullfile(pthSite,'flux','hit_vin_mean'),...
+                            fullfile(pthSite,'met','Voltage_24V_avg'),...
+                            fullfile(pthSite,'Met\B','SYS_Logger_Batt_Min')...
+                           );
+        trace_legend = char('hit-vin-mean','Main','Logger B');
+    otherwise
+        trace_path  = char( fullfile(pthSite,'flux','hit_vin_mean'),...
+                            fullfile(pthSite,'met','Voltage_24V_avg'),...
+                            fullfile(pthSite,'Met\SYS','SYS_PBox_Batt_Volt_Avg')...
+                           );
+        trace_legend = char('hit-vin-mean','Main','SYS_{PBox}');
+end
+
 trace_units = '24V Battery Voltage (V)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 sysVoltage24 = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([23 30.3])
 
 %----------------------------------------------------------
 % Battery Current
@@ -267,7 +310,7 @@ if strcmp(siteID,'MCGILL_1')
                        fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Min'),...
                        fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Max'),...
                        fullfile(pthSite,'Met\SYS','SYS_Batt_DCCurrent_Avg'));
-    trace_legend = char('Tower','Batt_{Avg}','Batt_{Min}','Batt_{Max}');
+    trace_legend = char('Tower','Batt_{Min}','Batt_{Max}','Batt_{Avg}');
 else
     trace_path = char(fullfile(pthSite,'Met','PowerBox_Current_Avg'));
     trace_legend = [];
@@ -279,17 +322,13 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 sysCurrent = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num ); 
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([-5 Inf])
 
 %----------------------------------------------------------
 % Cumulative Battery Current
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Cumulative Battery Current');
 switch siteID
-    case {'BB2','DSM','RBM'}
-        Ibb1 = read_sig( fullfile(pthSite,'MET', 'SYS_Batt_DCCurrent_Avg'), ind,yearIn, t, 0 );
-        Ibb1(isnan(Ibb1))=0;
-        trace_path = (1+cumsum(Ibb1/2)/2600)*100;    % Ah / Ah
-        trace_legend = [];
     case 'MCGILL_1'
         Ibb1 = read_sig( fullfile(pthSite,'Met\SYS', 'SYS_Batt_DCCurrent_Avg'), ind,yearIn, t, 0 );
         Ibb1(isnan(Ibb1))=0;
@@ -309,19 +348,27 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 
 %----------------------------------------------------------
-% System Voltage
+% Logger Voltage
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,'Logger Voltage');
-
-trace_path  = char(fullfile(pthSite,'flux','Voltage_12V_Avg'),...
-                   fullfile(pthSite,'flux','vin_sf_mean'),...
-                   fullfile(pthSite,'met','SYS_Logger_Batt_Min'));
-trace_legend = char('Voltage 12V Avg','SmartFlux V','SYS Logger Batt Min');      
+switch siteID
+    case 'UQAM_4'
+        trace_path  = char(fullfile(pthSite,'flux','Voltage_12V_Avg'),...
+                           fullfile(pthSite,'met','SYS_Logger_Batt_Min'),...
+                           fullfile(pthSite,'met\B','SYS_BattV_Avg'));
+        trace_legend = char('Voltage 12V Avg','Logger - A', 'Logger - B');
+    otherwise
+        trace_path  = char(fullfile(pthSite,'flux','Voltage_12V_Avg'),...
+                           fullfile(pthSite,'met','SYS_Logger_Batt_Min'));
+        trace_legend = char('Voltage 12V Avg','SmartFlux V','SYS Logger Batt Min');
+end
+      
 trace_units = 'Instrument Voltage (V)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 sysVoltage = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([11.8 15.1])
 
 %----------------------------------------------------------
 % System Power
@@ -345,6 +392,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 sysPower = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([-100 Inf])
 
 %----------------------------------------------------------
 % System Energy
@@ -367,14 +415,31 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 % System Temperatures
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' System Temperatures');
-trace_path  = char(fullfile(pthSite,'MET','SYS_Logger_Temp_Avg')...  
-           );
-trace_legend = char('CR1000x');
+switch siteID
+    case {'MCGILL_1'}
+        trace_path  = char(fullfile(pthSite,'MET','SYS_Logger_Temp_Avg'),...
+                           fullfile(pthSite,'MET\SYS','SYS_BatteryBoxTC_Avg'),...
+                           fullfile(pthSite,'MET\SYS','SYS_chargerTC_Avg'),...
+                           fullfile(pthSite,'MET\SYS','SYS_PanelT_CR1000_Avg')...
+                   );
+        trace_legend = char('CR1000x','Battery','Charger','Battery Logger');
+    case {'UQAM_4'}
+        trace_path  = char(fullfile(pthSite,'MET','SYS_Logger_Temp_Avg'),...
+                           fullfile(pthSite,'MET\B','SYS_PTemp_C_Avg')...
+                   );
+        trace_legend = char('CR1000x','Battery','Charger','Battery Logger');    
+    otherwise
+        trace_path  = char(fullfile(pthSite,'MET','SYS_Logger_Temp_Avg')...  
+                   );
+        trace_legend = char('CR1000x');
+end
+
 trace_units = 'Temperature (\circC)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([-20 45])
 
 %----------------------------------------------------------
 % LI-7200 Thermocouples
@@ -410,6 +475,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[1 1000*60] );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([12 Inf])
 
 %----------------------------------------------------------
 % Flow Drive
@@ -431,6 +497,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([30 98])
 
 %----------------------------------------------------------
 % Head Pressure
@@ -452,6 +519,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([-3.6 -0.8])
 
 %----------------------------------------------------------
 % Air pressure
@@ -483,7 +551,7 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
-
+shadeBadZone([-Inf 4000])
 
 %----------------------------------------------------------
 % Diagnostics
@@ -566,6 +634,51 @@ y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num );
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+shadeBadZone([15 Inf])
+
+%----------------------------------------------------------
+% LI700 Washer pump
+%----------------------------------------------------------
+trace_name  = sprintf('%s: %s',siteID,' LI-7700 Washer pump');
+trace_path  = char(fullfile(pthSite,'Flux','pump_on_LI_7700'));
+trace_legend = [];
+trace_units = 'Washer Pump ON (Samples)';
+y_axis      = [];
+fig_num = fig_num + fig_num_inc;
+x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[],[],char('o') );
+% Add a shaded area where the trace should not exist (above 500)
+shadeBadZone([-Inf 500])
+indAxes = indAxes+1; allAxes(indAxes) = gca;
+
+%----------------------------------------------------------
+% LI7700 spin motor
+%----------------------------------------------------------
+trace_name  = sprintf('%s: %s',siteID,' LI7700 spin motor');
+trace_path  = char(fullfile(pthSite,'Flux','motor_spinning_LI_7700'));
+trace_legend = [];
+trace_units = 'Spin Motor ON (Samples)';
+y_axis      = [];
+fig_num = fig_num + fig_num_inc;
+x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[],[],char('o') );
+% Add a shaded area where the trace should not exist (above 500)
+shadeBadZone([-Inf 700])
+indAxes = indAxes+1; allAxes(indAxes) = gca;
+
+%----------------------------------------------------------
+% LI7700 heaters
+%----------------------------------------------------------
+trace_name  = sprintf('%s: %s',siteID,' LI7700 Heaters');
+trace_path  = char(fullfile(pthSite,'Flux','top_heater_on_LI_7700'),...
+                  fullfile(pthSite,'Flux','bottom_heater_on_LI_7700')...
+                  );
+trace_legend = char('Top','Bottom');
+trace_units = 'Heaters ON (Samples)';
+y_axis      = [];
+fig_num = fig_num + fig_num_inc;
+x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[],[],char('o','d') );
+% Add a shaded area where the trace should not exist (above 500)
+shadeBadZone([-Inf 37000])
+indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 %----------------------------------------------------------
 % Delay times
@@ -580,18 +693,59 @@ trace_units = 'Delay Times (Seconds)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[],[],char('o') );
+shadeBadZone([-0.3 0.3])
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+%----------------------------------------------------------
+% Delay times histogram
+%----------------------------------------------------------
+fig_num = fig_num + fig_num_inc;
+figure(fig_num)
+set(fig_num,'menubar','none',...
+            'numbertitle','off',...
+            'Name',[siteID ': Delay Times Histogram']);
+pos = get(0,'screensize');
+set(fig_num,'position',[8 pos(4)/2-20 pos(3)-20 pos(4)/2-35]);      
+clf
+subplot(3,1,1)
+histogram(x(:,1),'binwidth',0.05,Normalization="percentage")
+xlim([-2 2])
+grid on
+ytickformat("percentage");
+title([siteID ': H_2O'])
+subplot(3,1,2)
+histogram(x(:,2),'binwidth',0.05,Normalization="percentage");
+xlim([-2 2])
+grid on
+title([siteID ': CO_2'])
+ytickformat("percentage");
+subplot(3,1,3)
+histogram(x(:,3),'binwidth',0.05,Normalization="percentage"); 
+xlim([-2 2])
+title([siteID ': CH_4'])
+ytickformat("percentage");
+% hold off
+grid on
+xlabel('Seconds')
+
 
 %----------------------------------------------------------
 % Soil moisture
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,' Soil Moisture');
-
-trace_path  = char( fullfile(pthSite,'met','a_CS650_1_1_1_Avg'),...
-                    fullfile(pthSite,'met','a_CS650_1_2_1_Avg'),...
-                    fullfile(pthSite,'met','a_CS650_1_3_1_Avg'),...
-                    fullfile(pthSite,'met','a_CS650_1_4_1_Avg')...
-                   );
+switch siteID
+    case 'UQAM_4'
+        trace_path  = char( fullfile(pthSite,'met/B','a_CS650_1_1_1_Avg'),...
+                            fullfile(pthSite,'met/B','a_CS650_1_2_1_Avg'),...
+                            fullfile(pthSite,'met/B','a_CS650_1_3_1_Avg'),...
+                            fullfile(pthSite,'met/B','a_CS650_1_4_1_Avg')...
+                            );
+    otherwise
+        trace_path  = char( fullfile(pthSite,'met','a_CS650_1_1_1_Avg'),...
+                            fullfile(pthSite,'met','a_CS650_1_2_1_Avg'),...
+                            fullfile(pthSite,'met','a_CS650_1_3_1_Avg'),...
+                            fullfile(pthSite,'met','a_CS650_1_4_1_Avg')...
+                            );
+end
 
 trace_legend = char('1','2','3','4');
 trace_units = '(%)'; 
