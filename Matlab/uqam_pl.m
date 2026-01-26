@@ -348,7 +348,7 @@ indAxes = indAxes+1; allAxes(indAxes) = gca;
 
 
 %----------------------------------------------------------
-% System Voltage
+% Logger Voltage
 %----------------------------------------------------------
 trace_name  = sprintf('%s: %s',siteID,'Logger Voltage');
 switch siteID
@@ -693,7 +693,40 @@ trace_units = 'Delay Times (Seconds)';
 y_axis      = [];
 fig_num = fig_num + fig_num_inc;
 x = plt_msig( trace_path, ind, trace_name, trace_legend, yearIn, trace_units, y_axis, t, fig_num,[],[],char('o') );
+shadeBadZone([-0.3 0.3])
 indAxes = indAxes+1; allAxes(indAxes) = gca;
+%----------------------------------------------------------
+% Delay times histogram
+%----------------------------------------------------------
+fig_num = fig_num + fig_num_inc;
+figure(fig_num)
+set(fig_num,'menubar','none',...
+            'numbertitle','off',...
+            'Name',[siteID ': Delay Times Histogram']);
+pos = get(0,'screensize');
+set(fig_num,'position',[8 pos(4)/2-20 pos(3)-20 pos(4)/2-35]);      
+clf
+subplot(3,1,1)
+histogram(x(:,1),'binwidth',0.05,Normalization="percentage")
+xlim([-2 2])
+grid on
+ytickformat("percentage");
+title([siteID ': H_2O'])
+subplot(3,1,2)
+histogram(x(:,2),'binwidth',0.05,Normalization="percentage");
+xlim([-2 2])
+grid on
+title([siteID ': CO_2'])
+ytickformat("percentage");
+subplot(3,1,3)
+histogram(x(:,3),'binwidth',0.05,Normalization="percentage"); 
+xlim([-2 2])
+title([siteID ': CH_4'])
+ytickformat("percentage");
+% hold off
+grid on
+xlabel('Seconds')
+
 
 %----------------------------------------------------------
 % Soil moisture
