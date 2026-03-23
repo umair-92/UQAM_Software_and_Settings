@@ -3,6 +3,8 @@
 # Modified by David
 # Dec, 2025
 
+# @Rosie: Please check the instruments measurement height and storage fluxes for 2025.
+
 Metadata:
   siteID: UQAM_1
   estYear: 2024 
@@ -24,7 +26,7 @@ Processing:
     Met_Gap_Filling:
       Linear_Interpolation:
         # *** DOUBLE CHECK VARIABLE NAMES ON RHS MATCH SECOND STAGE TRACE NAMES ***
-        Fill_Vars: TA_1_2_1_F,RH_1_2_1_F,VPD_1_2_1_F
+        Fill_Vars: TA_1_2_1_F,RH_1_2_1,VPD_1_2_1_F
     Standard_Cleaning:
       # Filter out values  #+/- wakeFilter of northOffset +/- 180 degrees
       wakeFilter: 30
